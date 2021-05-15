@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}
+    我的网站|口算训练
+{% endblock %}
+{% block nav_math_active %}active{% endblock %}
+
+{% load staticfiles %}
+{% block hearder_extends %}
+    <link rel="stylesheet" href="{% static 'math_practice.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 leftBtn">
+                <button type="button" class="btn btn-primary btn-lg " id="start_learn"> 开始学习 </button>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="panel panel-default learning_view">
+                    <div class="panel-heading">口算练习</div>
+                    <div class="panel-body">
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                            题目示例:
+                            <p>1+1=</p>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="2">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button">提交!</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default message_view">
+                    <div class="panel-heading">提示消息</div>
+                    <div class="panel-body">
+                        <p id="messageInfo">恭喜你，答对啦！</p>
+                        <p>回答错误，正确答案是..</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 rightBtn">
+                <button type="button" class="btn btn-primary btn-lg" id="take_a_break" disabled> 休息一下</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script_extends %}
+    <script type="text/javascript">
+        var startDate;
+        $("#start_learn").click(function(){
+            startDate = new Date();
+            // 根据用户的记录模型获取对应的题目参数
+            $("#take_a_break").removeAttr('disabled');
+            $("#start_learn").attr('disabled', 'disabled');
+        });
+        $("#take_a_break").click(function(){
+            var endDate = new Date();
+            $("#start_learn").removeAttr('disabled');
+            $("#take_a_break").attr('disabled', 'disabled');
+            var total_learning_time = diffTime(startDate, endDate);
+            $("#messageInfo").text(total_learning_time);
+        });
+
+        function diffTime(startDate,endDate) {
+            var diff=endDate.getTime() - startDate;//.getTime();//时间差的毫秒数
+
+            //计算出相差天数
+            var days=Math.floor(diff/(24*3600*1000));
+
+            //计算出小时数
+            var leave1=diff%(24*3600*1000);    //计算天数后剩余的毫秒数
+            var hours=Math.floor(leave1/(3600*1000));
+            //计算相差分钟数
+            var leave2=leave1%(3600*1000);        //计算小时数后剩余的毫秒数
+            var minutes=Math.floor(leave2/(60*1000));
+
+            //计算相差秒数
+            var leave3=leave2%(60*1000);      //计算分钟数后剩余的毫秒数
+            var seconds=Math.round(leave3/1000);
+
+            var returnStr = '你本次共学习了：';
+            if(days>0) {
+                returnStr = returnStr + days + "天" ;
+            }
+            if(hours>0) {
+                returnStr = returnStr + hours + "小时";
+            }
+            if(minutes>0) {
+                returnStr = returnStr + minutes + "分钟";
+            }
+            returnStr = returnStr + seconds + "秒";
+            return returnStr;
+        }
+
+    </script>
+{% endblock %}
