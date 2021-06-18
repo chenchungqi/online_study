@@ -4,6 +4,23 @@ h3.home-content {
     margin-top: 4em;
     margin-bottom: 2em;
 }
+.background_title {
+    font-size: 200%;
+    text-align: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+.content {
+    font-size: 150%;
+    text-align: center;
+    font-family: STKaiti;
+    line-height: 50px;
+}
+.content2 {
+    font-size: 150%;
+    text-align: center;
+    line-height: 50px;
+}
 
 div#container {
     margin: 0 auto;

@@ -7,7 +7,8 @@ from .forms import CommentForm
 
 
 def update_comment(request):
-    '''referer = request.META.get('HTTP_REFERER', reverse('home'))
+    '''
+    referer = request.META.get('HTTP_REFERER', reverse('home'))
     if not request.user.is_authenticated:
         return render(request, 'error.html', {'message': '用户未登录', 'redirect_to': referer})
     text = request.POST.get('text', '').strip()
@@ -26,7 +27,8 @@ def update_comment(request):
     comment.text = text
     comment.content_object = model_obj
     comment.save()
-    return redirect(referer)'''
+    return redirect(referer)
+    '''
 
     referer = request.META.get('HTTP_REFERER', reverse('home'))
     comment_form = CommentForm(request.POST, user=request.user)

@@ -7,3 +7,108 @@ div.rightBtn {
     text-align: center;
     margin-top:7em;
 }
+
+div.title_one {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 24px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.left_part {
+    display: block;
+    width: 50%;
+    height: 400px;
+    float: left;
+}
+
+.question_part {
+    display: block;
+    height: 40%;
+    width: 100%;
+}
+#question_place {
+    font-size: 48px;
+    display: block;
+    width: 70%;
+    float: left;
+    padding-left: 30px;
+    padding-top: 30px;
+}
+#input_area {
+    font-size: 48px;
+    display: block;
+    height: 80px;
+    width: 100px;
+    line-height: 48px;
+    text-align: center;
+    float: right;
+    margin-top: 20px;
+    margin-right: 15px;
+}
+.tips_part {
+    display: block;
+    height: 60%;
+    width: 100%;
+    float: left;
+}
+
+.right_part {
+    display: block;
+    width: 50%;
+    height: 400px;
+    float: left;
+}
+.btn_extra {
+     display: block;
+     width: 27%;
+     height: 20%;
+     font-size: 36px;
+     float: left;
+     margin: 10px;
+}
+.btn_extra2 {
+     display: block;
+     width: 35%;
+     height: 20%;
+     font-size: 36px;
+     float: left;
+     margin: 25px;
+}
+.functionBtn_part {
+    display: block;
+    height: 30%;
+    width: 70%;
+    float: right;
+}
+#start_learn {
+    display: block;
+    width: 40%;
+    height: 4em;
+    font-size: 18px;
+    float: right;
+    margin-left: 30px;
+}
+
+#take_a_break {
+    display: block;
+    width: 40%;
+    height: 4em;
+    font-size: 18px;
+    float: right;
+}
+
+#messageInfo1 {
+    font-size: 200%;
+    line-height: 50px;
+    padding-left: 50px;
+}
+#messageInfo2 {
+    font-size: 150%;
+    line-height: 50px;
+}
+#messageInfo {
+    font-size: 150%;
+    line-height: 50px;
+}

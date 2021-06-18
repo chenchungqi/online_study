@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib import auth
 from django.contrib.auth.models import User
+from .models import Profile
 
 
 class LoginForm(forms.Form):
@@ -24,6 +25,14 @@ class RegForm(forms.Form):
                                max_length=30,
                                min_length=3,
                                widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'请输入3-30位用户名'}))
+    nickname = forms.CharField(label='昵称',
+                               max_length=20,
+                               min_length=1,
+                               widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'请输入昵称（1-20字）'}))
+    grade_class = forms.CharField(label='年级',
+                               max_length=20,
+                               min_length=1,
+                               widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'请输入年级（例如：三年级）'}))
     email = forms.EmailField(label='邮箱',
                                widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'请输入邮箱'}))
     password = forms.CharField(label='密码',
@@ -32,6 +41,10 @@ class RegForm(forms.Form):
     password_again = forms.CharField(label='再输入一次密码',
                                min_length=6,
                                widget=forms.PasswordInput(attrs={'class':'form-control', 'placeholder':'请输入密码'}))
+
+    def clean_nickname(self):
+        nickname = self.cleaned_data['nickname']
+        return nickname
 
     def clean_username(self):
         username = self.cleaned_data['username']
@@ -52,3 +65,8 @@ class RegForm(forms.Form):
             raise forms.ValidationError('两次输入密码不一致')
         return password_again
 
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ('nickname', 'grade_class',)

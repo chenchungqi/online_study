@@ -13,6 +13,13 @@
                 <ul>
                     <li>昵称：{{ user.get_nickname }} </li>
                     <li>邮箱: {% if user.email %}{{ user.email }}{% else %}未绑定<a href="#">绑定邮箱</a>{% endif %}</li>
+                    <li>年级:{{ user.profile.grade_class }} </li>
+                    <li>做题总数:{{ user.profile.question_num }} </li>
+                    <li>学习时长:{{ user.display_time_diff }} </li>
+                    {% if user.is_staff %}
+                        <li>能量:{{ user.profile.lotteryCount }} </li>
+                        <li>成就称号:{{ user.profile.achievement_title }} </li>
+                    {% endif %}
                     <li>上一次登录的时间：{{ user.last_login|date:"Y-m-d H:i:s" }}</li>
                 </ul>
             {% else %}

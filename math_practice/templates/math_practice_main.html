@@ -7,63 +7,235 @@
 {% load staticfiles %}
 {% block hearder_extends %}
     <link rel="stylesheet" href="{% static 'math_practice.css' %}">
+    <link rel="stylesheet" href="{% static 'xcConfirm.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xcConfirm.js' %}"></script>
 {% endblock %}
 
 {% block content %}
+    <div class="row title_one">
+            <span class="title">Mathematics - revision</span>
+        </div>
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3 col-md-3 col-sm-3 leftBtn">
-                <button type="button" class="btn btn-primary btn-lg " id="start_learn"> 开始学习 </button>
+        <div class="left_part">
+            <div class="question_part">
+                <span id="question_place">题目显示区域 </span>
+                {% csrf_token %}
+                <input type="text" id="input_area" class="input_answer" >
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6">
-                <div class="panel panel-default learning_view">
-                    <div class="panel-heading">口算练习</div>
-                    <div class="panel-body">
-                        <div class="col-lg-8 col-md-8 col-sm-8">
-                            题目示例:
-                            <p>1+1=</p>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-4">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="2">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button">提交!</button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="panel panel-default message_view">
-                    <div class="panel-heading">提示消息</div>
-                    <div class="panel-body">
-                        <p id="messageInfo">恭喜你，答对啦！</p>
-                        <p>回答错误，正确答案是..</p>
-                    </div>
+            <div class="tips_part">
+                <div class="panel-body">
+                    <p id="messageInfo1"></p>
+                    <p id="messageInfo2"></p>
+                    <p id="messageInfo"></p>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-3 col-sm-3 rightBtn">
-                <button type="button" class="btn btn-primary btn-lg" id="take_a_break" disabled> 休息一下</button>
+            <div class="functionBtn_part">
+                <div>
+                    <button type="button" class="btn btn-primary btn-lg" id="start_learn"> 开始学习 </button>
+                    <button type="button" class="btn btn-primary btn-lg" id="take_a_break" disabled> 休息一下</button>
+                </div>
             </div>
+        </div>
+        <div class="right_part">
+            <button type="button" class="btn btn-default btn_extra" id="btn7"> 7 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn8"> 8 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn9"> 9 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn4"> 4 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn5"> 5 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn6"> 6 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn1"> 1 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn2"> 2 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn3"> 3 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn0"> 0 </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn10"> . </button>
+            <button type="button" class="btn btn-default btn_extra" id="btn11"> / </button>
+            <button type="button" class="btn btn-warning btn_extra2" id="btnC"> C </button>
+            <button type="button" class="btn btn-success btn_extra2" id="a_btn"> OK</button>
         </div>
     </div>
 {% endblock %}
 
 {% block script_extends %}
     <script type="text/javascript">
+     　　$.ajaxSetup({
+ 　　　　   data: {csrfmiddlewaretoken: '{{ csrf_token }}'}
+ 　　    })
         var startDate;
+        var tempData_list;
+        var correct_nums = 0;
+        var false_nums = 0;
+        var each_group_counts = 20;  //每组的题数
         $("#start_learn").click(function(){
             startDate = new Date();
-            // 根据用户的记录模型获取对应的题目参数
+            //置空全局变量
+            tempData_list = [];
+            correct_nums=0;
+            false_nums=0;
+            $("#messageInfo1").text('');
+            $("#messageInfo2").text('');
+            $("#messageInfo").text('');
+            $.ajax({
+                url: "{% url 'get_study_model' %}",
+                type: 'GET',
+                data: {
+                    question_counts: each_group_counts,
+                },
+                cache: false,
+                success: function (data){
+                    if(data['status']=='SUCCESS'){
+                        var questionAnswer = data['question_list'][0].split('=')
+                        $("#question_place").text(questionAnswer[0]+' =');
+                        tempData_list = data['question_list'];
+                    }else{
+                        alert(data['message']);
+                    }
+                    console.log(data)
+                },
+                error: function (xhr){
+                    console.log(xhr)
+                }
+            });
             $("#take_a_break").removeAttr('disabled');
             $("#start_learn").attr('disabled', 'disabled');
+            document.getElementById('input_area').focus();
         });
         $("#take_a_break").click(function(){
             var endDate = new Date();
             $("#start_learn").removeAttr('disabled');
             $("#take_a_break").attr('disabled', 'disabled');
             var total_learning_time = diffTime(startDate, endDate);
+            var correct_percent = correct_nums/each_group_counts*100;
+            $("#messageInfo1").text('你的正确率是:'+correct_percent+'%');
+            $.ajax({
+                url: "{% url 'update_lottery_count' %}",
+                type: 'GET',
+                data: {
+                    correct_rates: correct_percent,
+                    total_learning_time:endDate.getTime() - startDate.getTime() //时间差的毫秒数
+                },
+                cache: false,
+                success: function (data){
+                    if(data['status']=='SUCCESS'){
+                        var score = data['grades']
+                        $("#messageInfo2").text(score);
+                        if (data['tips']!=''){
+                            txt = '恭喜你获得成就：'+data['tips']
+                            window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.info);
+                        }
+                    }else{
+                        console.log('有问题1')
+                    }
+                    console.log(data)
+                },
+                error: function (xhr){
+                    console.log(xhr)
+                }
+            });
             $("#messageInfo").text(total_learning_time);
         });
+        $("#a_btn").click(function(){
+            $("#messageInfo1").text('');
+            $("#messageInfo2").text('');
+            var input_answer = document.getElementsByClassName('input_answer')[0].value;
+            document.getElementById('input_area').focus();
+            var correct_answer_withmark = tempData_list[0].split('=')[1];
+            var correct_answer = correct_answer_withmark.split('&')[0];
+            var question_mark = correct_answer_withmark.split('&')[1];
+            console.log('correct_answer='+correct_answer,'input_answer='+input_answer)
+            //将数组的第一个元素删除，重新覆盖掉tempData_list
+            tempData_list.shift();
+            $.ajax({
+                url: "{% url 'math_practice_main' %}",
+                type: 'POST',
+                data: {
+                    input_answer: input_answer,
+                    correct_answer:correct_answer,
+                    question_mark:question_mark,
+                    tempData:tempData_list,
+                },
+                cache: false,
+                success: function (context){
+                    if(context['status']=='RIGHT'){
+                        $("#messageInfo1").text('Correct!');
+                        correct_nums +=1;
+                    }else{
+                        $("#messageInfo1").text('Sorry,wrong answer.');
+                        $("#messageInfo2").text('Correct answer is:'+context['rightAnswer']);
+                        false_nums +=1;
+                    }
+                    if (tempData_list == ''){
+                        $("#question_place").text('');
+                        $("#messageInfo1").text('');
+                        $("#messageInfo2").text('');
+                        window.wxc.xcConfirm('你这组已经学完，休息一下吧。', window.wxc.xcConfirm.typeEnum.info);
+                    }else{
+                        console.log('tempData_list='+tempData_list)
+                        var questionAnswer = tempData_list[0].split('=');
+                        $("#question_place").text(questionAnswer[0] + '=');
+                        // tempData_list = context['question_list'];
+                    }
+                    $("#input_area").val('');
+                    console.log(context)
+                },
+                error: function (xhr){
+                    console.log(xhr)
+                }
+            });
+        });
+        $("#btn7").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'7';
+        });
+        $("#btn8").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'8';
+        });
+        $("#btn9").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'9';
+        });
+        $("#btn4").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'4';
+        });
+        $("#btn5").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'5';
+        });
+        $("#btn6").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'6';
+        });
+        $("#btn1").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'1';
+        });
+        $("#btn2").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'2';
+        });
+        $("#btn3").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'3';
+        });
+        $("#btn0").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'0';
+        });
+        $("#btn10").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'.';
+        });
+        $("#btn11").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value +'/';
+        });
+        $("#btnC").click(function (){
+            var input_box =document.getElementById('input_area');
+            input_box.value = input_box.value.substr(0, input_box.value.length - 1);
+        });
+
 
         function diffTime(startDate,endDate) {
             var diff=endDate.getTime() - startDate;//.getTime();//时间差的毫秒数

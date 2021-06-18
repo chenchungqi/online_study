@@ -7,79 +7,102 @@
 
 {% block hearder_extends %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
-    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>
+{#    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>#}
 {% endblock %}
 
 {% block nav_home_active %}active{% endblock %}
 
 {% block content%}
-    <h3 class="home-content">欢迎来到游戏化在线学习网站！</h3>
-    <!-- 图表容器 DOM -->
-    <div id="container"></div>
-    <div class="hot-data">
-    <h3>今日热门点击</h3>
-    <ul>
-        {% for hot_data in today_hot_data %}
-            <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>
-                ({{ hot_data.read_num }})</li>
-        {% empty %}
-            <li>今天暂时没有热门博客</li>
-        {% endfor %}
-    </ul>
-    </div>
-    <div class="hot-data">
-    <h3>昨日热门点击</h3>
-    <ul>
-        {% for hot_data in yesterday_hot_data %}
-            <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>
-                ({{ hot_data.read_num }})</li>
-        {% empty %}
-            <li>昨天暂时没有热门博客</li>
-        {% endfor %}
-    </ul>
-    </div>
-    <div class="hot-data">
-    <h3>7天热门博客</h3>
-    <ul>
-        {% for hot_blog in hot_blogs_for_7_days %}
-            <li><a href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a>
-                ({{ hot_blog.read_num_sum }})</li>
-        {% empty %}
-            <li>近7天没有热门博客</li>
-        {% endfor %}
-    </ul>
-    </div>
+    {% if user.is_staff %}
+        <h3 class="home-content">欢迎来到游戏化在线学习网站！</h3>
+        <h4 class="background_title">故事背景</h4>
+        <div class="container content">
+            <span>知识幻境中有一批四处游学的旅行者，现在，他们旅行到了数学花园，正好赶上花园的丰收季。</span><br>
+            <span>大片大片缀满了能量果实的数学式株等待着花园小精灵的收割。</span><br>
+            <span>看着忙得热火朝天的小精灵，热心的旅行者们决定加入了收割的队伍，帮助小精灵们收割数学能量果实。</span><br>
+            <span>小精灵们十分感动，决定在丰收季结束后给予旅行者们惊喜和谢礼。</span><br>
+        </div>
+    {% else %}
+        <h3 class="home-content">欢迎来到在线学习网站!</h3>
+        {% if user.is_authenticated %}
+            <h4 class="background_title">个人信息</h4>
+            <ul class="container content2">
+                <li>昵称：{{ user.get_nickname }} </li>
+                <li>邮箱: {% if user.email %}{{ user.email }}{% else %}未绑定<a href="#">绑定邮箱</a>{% endif %}</li>
+                <li>年级:{{ user.profile.grade_class }} </li>
+                <li>做题总数:{{ user.profile.question_num }} </li>
+                <li>学习时长:{{ user.display_time_diff }} </li>
+                <li>上一次登录的时间：{{ user.last_login|date:"Y-m-d H:i:s" }}</li>
+            </ul>
+        {% endif %}
+    {% endif %}
 
-    <script>
-        // 图表配置
-        var options = {
-            chart: {type: 'line'},
-            title: {text: null},
-            xAxis: {
-                categories: {{ dates|safe }},
-                tickmarkPlacement: 'on',
-                title: {text:'网站阅读量变化图'},
-                },
-            yAxis: {
-                title: {text: null},
-                labels:{enabled:false},
-                gridLineDashStyle:'Dash',
-            },
-            series: [{                              // 数据列
-                name: '阅读量',                        // 数据列名
-                data: {{ read_nums }}                   // 数据
-            }],
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    }
-                }
-            },
-            legend: {enabled:false},
-            credits: {enabled:false},
-        };
-        // 图表初始化函数
-        var chart = Highcharts.chart('container', options);
-    </script>
+    <!-- 图表容器 DOM -->
+{#    <div id="container"></div>#}
+{#    <div class="hot-data">#}
+{#    <h3>今日热门点击</h3>#}
+{#    <ul>#}
+{#        {% for hot_data in today_hot_data %}#}
+{#            <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>#}
+{#                ({{ hot_data.read_num }})</li>#}
+{#        {% empty %}#}
+{#            <li>今天暂时没有热门博客</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    </div>#}
+{#    <div class="hot-data">#}
+{#    <h3>昨日热门点击</h3>#}
+{#    <ul>#}
+{#        {% for hot_data in yesterday_hot_data %}#}
+{#            <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>#}
+{#                ({{ hot_data.read_num }})</li>#}
+{#        {% empty %}#}
+{#            <li>昨天暂时没有热门博客</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    </div>#}
+{#    <div class="hot-data">#}
+{#    <h3>7天热门博客</h3>#}
+{#    <ul>#}
+{#        {% for hot_blog in hot_blogs_for_7_days %}#}
+{#            <li><a href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a>#}
+{#                ({{ hot_blog.read_num_sum }})</li>#}
+{#        {% empty %}#}
+{#            <li>近7天没有热门博客</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    </div>#}
+
+{#    <script>#}
+{#        // 图表配置#}
+{#        var options = {#}
+{#            chart: {type: 'line'},#}
+{#            title: {text: null},#}
+{#            xAxis: {#}
+{#                categories: {{ dates|safe }},#}
+{#                tickmarkPlacement: 'on',#}
+{#                title: {text:'网站阅读量变化图'},#}
+{#                },#}
+{#            yAxis: {#}
+{#                title: {text: null},#}
+{#                labels:{enabled:false},#}
+{#                gridLineDashStyle:'Dash',#}
+{#            },#}
+{#            series: [{                              // 数据列#}
+{#                name: '阅读量',                        // 数据列名#}
+{#                data: {{ read_nums }}                   // 数据#}
+{#            }],#}
+{#            plotOptions: {#}
+{#                line: {#}
+{#                    dataLabels: {#}
+{#                        enabled: true#}
+{#                    }#}
+{#                }#}
+{#            },#}
+{#            legend: {enabled:false},#}
+{#            credits: {enabled:false},#}
+{#        };#}
+{#        // 图表初始化函数#}
+{#        var chart = Highcharts.chart('container', options);#}
+{#    </script>#}
 {% endblock %}

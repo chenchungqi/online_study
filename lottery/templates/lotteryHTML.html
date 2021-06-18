@@ -8,8 +8,10 @@
 {% block hearder_extends %}
     <link rel="stylesheet" href="{% static 'lottery.css' %}">
     <link rel="stylesheet" href="{% static 'lottery_rotate.css' %}">
+    <link rel="stylesheet" href="{% static 'xcConfirm.css' %}">
     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/awardRotate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/xcConfirm.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -33,14 +35,12 @@
                     <div class="panel-heading">个人信息</div>
                     <div class="panel-body">
                         {% if user.is_authenticated %}
-                            <h2>{{ user.username }}</h2>
-                            <ul>
+                            <ul class="user_info">
                                 <li>昵称：{{ user.profile.nickname }}</li>
-                                <li>剩余抽奖次数：{{ user.profile.lotteryCount }}</li>
-                                <li>富强：0</li>
-                                <li>友善：0</li>
-                                <li>和谐：0</li>
-                                <li>敬业：0</li>
+                                <li>能量：<span id="lotteryCount">{{ user.profile.lotteryCount }}</span></li>
+                                <li>年级:{{ user.profile.grade_class }} </li>
+                                <li>做题总数:{{ user.profile.question_num }} </li>
+                                <li>学习时长:{{ user.display_time_diff }} </li>
                                 <li><a href="#">刷新个人信息</a></li>
                             </ul>
                         {% else %}
@@ -80,7 +80,8 @@ $(function (){
 			animateTo:angles+1800,
 			duration:8000,
 			callback:function (){
-				alert(txt);
+				// alert(txt);
+                window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.info);
 				bRotate = !bRotate;
 			}
 		})
@@ -89,6 +90,29 @@ $(function (){
 	$('.pointer').click(function (){
 
 		if(bRotate)return;
+		// 获取用户的抽奖次数lotteryCount
+
+        var user_lottery_count = document.getElementById('lotteryCount').innerText;
+        if (parseInt(user_lottery_count)<=0){
+            alert('剩余抽奖次数不足');
+            return;
+        }
+        $.ajax({
+                url: "{% url 'del_lottery_count' %}",
+                type: 'GET',
+                data: {
+
+                },
+                cache: false,
+                success: function (data){
+                    console.log(data)
+                    $("#lotteryCount").text(data['last_count']);
+                },
+                error: function (xhr){
+                    console.log(xhr)
+                }
+            });
+        // 抽奖的伪随机代码更改位置
 		var item = rnd(0,7);
 
 		switch (item) {

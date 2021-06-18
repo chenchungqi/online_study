@@ -3,7 +3,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from django.urls import reverse
 
-from .forms import LoginForm, RegForm
+from .forms import LoginForm, RegForm, UserProfileForm
 
 
 def login(request):
@@ -24,16 +24,20 @@ def login(request):
 def register(request):
     if request.method == 'POST':
         reg_form = RegForm(request.POST)
-        if reg_form.is_valid():
+        userprofile_form = UserProfileForm(request.POST)
+        if reg_form.is_valid()*userprofile_form.is_valid():
             username = reg_form.cleaned_data['username']
             email = reg_form.cleaned_data['email']
             password = reg_form.cleaned_data['password']
-
             user = User()
             user.username = username
             user.email = email
             user.set_password(password)
             user.save()
+
+            new_profile = userprofile_form.save(commit=False)
+            new_profile.user = user
+            new_profile.save()
 
             user = auth.authenticate(username=username, password=password)
             auth.login(request, user)
