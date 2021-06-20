@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'math_practice.css' %}">
     <link rel="stylesheet" href="{% static 'xcConfirm.css' %}">
     <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.pietimer.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/xcConfirm.js' %}"></script>
 {% endblock %}
 
@@ -28,6 +29,12 @@
                     <p id="messageInfo1"></p>
                     <p id="messageInfo2"></p>
                     <p id="messageInfo"></p>
+                </div>
+                <div class="demo">
+{#                    <p><a href="#" id="start" class="btn">开始</a> <a href="#" id="pause" class="btn">暂停</a></p>#}
+{#                    <br/>#}
+                    <p id="demo"></p>
+                    <p class="boom">时间到！</p>
                 </div>
             </div>
             <div class="functionBtn_part">
@@ -85,6 +92,7 @@
                 success: function (data){
                     if(data['status']=='SUCCESS'){
                         var questionAnswer = data['question_list'][0].split('=')
+                        // 分离出所属题目的难度，根据难度生成所需时间，并开始计时
                         $("#question_place").text(questionAnswer[0]+' =');
                         tempData_list = data['question_list'];
                     }else{
@@ -236,6 +244,24 @@
             input_box.value = input_box.value.substr(0, input_box.value.length - 1);
         });
 
+        $('.boom').hide();
+        $('#demo').pietimer({
+            seconds: 60,
+            color: 'rgba(0, 0, 0, 0.8)',
+            height: 100,
+            width: 100
+        },function(){
+            $('.boom').show('slow');
+        });
+        $('a#start').click(function(){
+            $('.boom').hide();
+            $('#demo').pietimer('start');
+            return false;
+        });
+        $('a#pause').click(function(){
+            $('#demo').pietimer('pause');
+            return false;
+        });
 
         function diffTime(startDate,endDate) {
             var diff=endDate.getTime() - startDate;//.getTime();//时间差的毫秒数

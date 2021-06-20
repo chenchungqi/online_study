@@ -16,6 +16,7 @@ class Profile(models.Model):
     cquestion_sum = models.IntegerField(verbose_name='正确题目数', default=0)
     wquestion_sum = models.IntegerField(verbose_name='错误题目数', default=0)
     achievement_title = models.CharField(max_length=100, verbose_name='成就', default='')
+    diamond = models.IntegerField(verbose_name='钻石', default=0)
 
     def __str__(self):
         return '<Profile: %s %s for %s>' % (self.nickname, self.lotteryCount, self.user.username)

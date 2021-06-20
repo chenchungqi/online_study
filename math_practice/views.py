@@ -199,28 +199,28 @@ def question_t7(count):
     operator1 = random.choice('*/')
     operator2 = random.choice('*/')
     for num in range(int(count)):
-        if random.random() < 0.5:
+        if random.random() < 0.8:
             if operator1 == '*':
                 first = round(random.uniform(1, 100), 2)
-                second = round(random.uniform(1, 100), 2)
+                second = round(random.uniform(1, 100), 1)
                 r = str(first) + operator1 + str(second) + ' ='
                 answer = eval(str(first) + operator1 + str(second))
             else:
                 first = round(random.uniform(1, 100), 2)
-                second = round(random.uniform(1, 100), 2)
+                second = round(random.uniform(1, 100), 1)
                 r = str(first) + operator1 + str(second) + ' ='
                 answer = eval(str(first) + operator1 + str(second))
         else:
             if operator1 == '/' and operator2 == '/':
                 first = round(random.uniform(50, 100), 2)
-                second = round(random.uniform(1, 50), 2)
-                third = round(random.uniform(1, 10), 2)
+                second = round(random.uniform(1, 50), 1)
+                third = round(random.uniform(1, 10), 1)
                 r = str(first) + operator1 + str(second) + operator2 + str(third) + ' ='
                 answer = eval(str(first) + operator1 + str(second) + operator2 + str(third))
             else:
                 first = round(random.uniform(1, 100), 2)
-                second = round(random.uniform(1, 100), 2)
-                third = round(random.uniform(1, 100), 2)
+                second = round(random.uniform(1, 100), 1)
+                third = round(random.uniform(1, 100), 1)
                 r = str(first) + operator1 + str(second) + operator2 + str(third) + ' ='
                 answer = eval(str(first) + operator1 + str(second) + operator2 + str(third))
         r += str(round(answer, 2))
@@ -229,10 +229,50 @@ def question_t7(count):
     return llist
 
 
+# 8.分数加减法（和<100，差>0）
+# 分数加法：1/2+4/5、1/2+3/8+6/5【是否需要再次分级，避免一个学生遇到无需通分，另一个学生遇到需要大量通分的题目】
+# 分数减法：1/2-1/3、6/5-1/12-1/13
 def question_t8(count):
     llist = []
     for num in range(int(count)):
-        r = '1/2+4/5=9/5'
+        operator1 = random.choice('+-')
+        operator2 = random.choice('+-')
+        if random.random() < 0.5:
+            while True:
+                first_fenzi = random.randint(1, 20)
+                first_fenmu = random.randint(1, 20)
+                second_fenzi = random.randint(1, 20)
+                second_fenmu = random.randint(1, 20)
+                if operator1 == '-':
+                    if (first_fenzi / first_fenmu) < (second_fenzi / second_fenmu):
+                        first_fenzi, first_fenmu, second_fenzi, second_fenmu = second_fenzi, second_fenmu, first_fenzi, first_fenmu
+                r = str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(
+                    second_fenmu) + ' ='
+                answer = eval(
+                    str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(second_fenmu))
+                if 100 > answer > 0:
+                    break
+        else:
+            while True:
+                first_fenzi = random.randint(1, 20)
+                first_fenmu = random.randint(1, 20)
+                second_fenzi = random.randint(1, 20)
+                second_fenmu = random.randint(1, 20)
+                third_fenzi = random.randint(1, 20)
+                third_fenmu = random.randint(1, 20)
+                if operator1 == '-':
+                    if (first_fenzi / first_fenmu) < (second_fenzi / second_fenmu):
+                        first_fenzi, first_fenmu, second_fenzi, second_fenmu = second_fenzi, second_fenmu, first_fenzi, first_fenmu
+                if operator2 == '-':
+                    if (second_fenzi / second_fenmu) < (third_fenzi / third_fenmu):
+                        second_fenzi, second_fenmu, third_fenzi, third_fenmu = third_fenzi, third_fenmu, second_fenzi, second_fenmu
+                r = str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(
+                    second_fenmu) + operator2 + str(third_fenzi) + '/' + str(third_fenmu) + ' ='
+                answer = eval(str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(
+                    second_fenmu) + operator2 + str(third_fenzi) + '/' + str(third_fenmu))
+                if 100 > answer > 0:
+                    break
+        r += str(round(answer, 2))
         r += '&T8'
         llist.append(r)
     return llist
@@ -240,8 +280,44 @@ def question_t8(count):
 
 def question_t9(count):
     llist = []
+    operator1 = random.choice('*/')
+    operator2 = random.choice('*/')
     for num in range(int(count)):
-        r = '1/2*4/3=2/3'
+        if random.random() < 0.8:
+            first_fenzi = random.randint(1, 20)
+            first_fenmu = random.randint(1, 20)
+            second_fenzi = random.randint(1, 20)
+            second_fenmu = random.randint(1, 20)
+            if operator1 == '*':
+                r = str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(
+                    second_fenmu) + ' ='
+                answer = eval(
+                    str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(second_fenmu))
+            else:
+                r = '(' + str(first_fenzi) + '/' + str(first_fenmu) + ')' + operator1 + '(' + str(
+                    second_fenzi) + '/' + str(second_fenmu) + ')' + ' ='
+                answer = eval('(' + str(first_fenzi) + '/' + str(first_fenmu) + ')' + operator1 + '(' + str(
+                    second_fenzi) + '/' + str(second_fenmu) + ')')
+        else:
+            first_fenzi = random.randint(1, 20)
+            first_fenmu = random.randint(1, 20)
+            second_fenzi = random.randint(1, 20)
+            second_fenmu = random.randint(1, 20)
+            third_fenzi = random.randint(1, 20)
+            third_fenmu = random.randint(1, 20)
+            if operator1 == '/' or operator2 == '/':
+                r = '(' + str(first_fenzi) + '/' + str(first_fenmu) + ')' + operator1 + '(' + str(
+                    second_fenzi) + '/' + str(second_fenmu) + ')' + operator2 + '(' + str(third_fenzi) + '/' + str(
+                    third_fenmu) + ')' + ' ='
+                answer = eval('(' + str(first_fenzi) + '/' + str(first_fenmu) + ')' + operator1 + '(' + str(
+                    second_fenzi) + '/' + str(second_fenmu) + ')' + operator2 + '(' + str(third_fenzi) + '/' + str(
+                    third_fenmu) + ')')
+            else:
+                r = str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(
+                    second_fenmu) + operator2 + str(third_fenzi) + '/' + str(third_fenmu) + ' ='
+                answer = eval(str(first_fenzi) + '/' + str(first_fenmu) + operator1 + str(second_fenzi) + '/' + str(
+                    second_fenmu) + operator2 + str(third_fenzi) + '/' + str(third_fenmu))
+        r += str(round(answer, 2))
         r += '&T9'
         llist.append(r)
     return llist
@@ -335,31 +411,6 @@ def get_question_method(study_model, question_counts, question_difficulty):
                 question_list.append(each)
     random.shuffle(question_list)
     print(question_list)
-
-    # biggest = 100
-    # operators = '＋－×÷'
-    # for num in range(int(question_counts)):
-    #     first = random.randint(1, biggest)
-    #     second = random.randint(1, biggest)
-    #     operator = random.choice(operators)
-    #     if operator == '-':
-    #         if first < second:
-    #             first, second = second, first
-    #     r = str(first).ljust(2, ' ') + ' ' + operator + str(second).ljust(2, ' ') + '='
-    #     if operator == '×':
-    #         operator = '*'
-    #     elif operator == '÷':
-    #         operator = '/'
-    #     elif operator == '＋':
-    #         operator = '+'
-    #     elif operator == '－':
-    #         operator = '-'
-    #     else:
-    #         print('未识别操作符')
-    #     answer = eval(str(first)+operator+str(second))
-    #     # 将结果取到2位小数
-    #     r += str(round(answer, 2))
-    #     question_list.append(r)
     return question_list
 
 
@@ -388,7 +439,11 @@ def math_practice_main(request):
         tempData = request.POST.get('tempData', '')
         user = request.user
         print('input_answer='+input_answer,'correct_answer='+correct_answer,'tempData_list='+tempData,'question_mark='+question_mark)
-        if input_answer == correct_answer:
+        if type(input_answer) == str:
+            input_answer = eval(input_answer)
+        if type(correct_answer) == str:
+            correct_answer = eval(correct_answer)
+        if round(input_answer, 2) == round(correct_answer, 2):
             context['status'] = 'RIGHT'
             user.profile.cquestion_sum += 1
             user.profile.save()
@@ -456,6 +511,11 @@ def update_lottery_count(request):
     if int(correct_rates) == 100:
         addCount = 3
         score = '评分为:S'
+        # 升级
+        user = request.user
+        if user.profile.question_difficulty < 8:
+            user.profile.question_difficulty += 1
+            user.profile.save()
     elif int(correct_rates) >= 80:
         addCount = 2
         score = '评分为:A'
@@ -467,10 +527,11 @@ def update_lottery_count(request):
     elif int(correct_rates) >= 60:
         addCount = 1
         score = '评分为:B'
+        user = request.user
     else:
-        if int(correct_rates) <= 20:
+        user = request.user
+        if int(correct_rates) <= 40:
             # 降级
-            user = request.user
             if user.profile.question_difficulty > 0:
                 user.profile.question_difficulty -= 1
                 user.profile.save()
@@ -489,30 +550,37 @@ def update_lottery_count(request):
         if int(totalTime) >= 10800000:
             if chengjiu.find('高级体能收集大师') == -1:
                 profile.achievement_title += ',高级体能收集大师'
+                profile.lotteryCount += 1
                 tips = '高级体能收集大师'
         elif int(totalTime) >= 9000000:
             if chengjiu.find('废寝忘食') == -1:
                 profile.achievement_title += ',废寝忘食'
+                profile.lotteryCount += 2
                 tips = '废寝忘食'
         elif int(totalTime) >= 7200000:
             if chengjiu.find('精灵见了直呼内行') == -1:
                 profile.achievement_title += ',精灵见了直呼内行'
+                profile.lotteryCount += 5
                 tips = '精灵见了直呼内行'
         elif int(totalTime) >= 5400000:
             if chengjiu.find('坚持的决心') == -1:
                 profile.achievement_title += ',坚持的决心'
+                profile.lotteryCount += 8
                 tips = '坚持的决心'
         elif int(totalTime) >= 3600000:
             if chengjiu.find('专注收集者') == -1:
                 profile.achievement_title += ',专注收集者'
+                profile.lotteryCount += 10
                 tips = '专注收集者'
         elif int(totalTime) >= 1800000:
             if chengjiu.find('专心收集者') == -1:
                 profile.achievement_title += ',专心收集者'
+                profile.lotteryCount += 15
                 tips = '专心收集者'
         elif int(totalTime) >= 600000:
             if chengjiu.find('开端') == -1:
                 profile.achievement_title += '开端'
+                profile.lotteryCount += 20
                 tips = '开端'
         else:
             pass

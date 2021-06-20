@@ -49,7 +49,7 @@ div.title_one {
 }
 .tips_part {
     display: block;
-    height: 60%;
+    height: 67%;
     width: 100%;
     float: left;
 }
@@ -112,3 +112,21 @@ div.title_one {
     font-size: 150%;
     line-height: 50px;
 }
+
+*{margin:0;padding:0;list-style-type:none;}
+a,img{border:0;text-decoration:none;}
+body{font:14px/180% Arial, Helvetica, sans-serif, "新宋体";}
+
+.demo{width:300px; margin:60px auto 10px auto}
+@media only screen and (min-width: 420px) {
+	.demo{width:500px; margin:60px auto 10px auto}
+}
+/*.btn {*/
+/*	text-transform: uppercase;*/
+/*	background: rgb(0, 100, 0); color: white;*/
+/*	padding: 10px 20px; border-radius: 5px;*/
+/*	cursor: pointer;margin:10px auto;width:100px;text-align:center;*/
+/*}*/
+/*.btn:hover {background: rgb(0, 75, 0);text-decoration:none}*/
+#demo{margin:20px auto;width:120px;height:120px}
+.demo p{text-align:center}
