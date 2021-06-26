@@ -7,6 +7,9 @@
 
 {% block hearder_extends %}
     <link rel="stylesheet" href="{% static 'home.css' %}">
+    {% if user.is_staff %}
+        <link rel="stylesheet" href="{% static 'home_v.css' %}">
+    {% endif %}
 {#    <script src="http://cdn.highcharts.com.cn/highcharts/highcharts.js"></script>#}
 {% endblock %}
 
@@ -16,12 +19,14 @@
     {% if user.is_staff %}
         <h3 class="home-content">欢迎来到游戏化在线学习网站！</h3>
         <h4 class="background_title">故事背景</h4>
+        <div class="hello"></div>
         <div class="container content">
             <span>知识幻境中有一批四处游学的旅行者，现在，他们旅行到了数学花园，正好赶上花园的丰收季。</span><br>
             <span>大片大片缀满了能量果实的数学式株等待着花园小精灵的收割。</span><br>
             <span>看着忙得热火朝天的小精灵，热心的旅行者们决定加入了收割的队伍，帮助小精灵们收割数学能量果实。</span><br>
             <span>小精灵们十分感动，决定在丰收季结束后给予旅行者们惊喜和谢礼。</span><br>
         </div>
+        <div class="blue_fairy"></div>
     {% else %}
         <h3 class="home-content">欢迎来到在线学习网站!</h3>
         {% if user.is_authenticated %}

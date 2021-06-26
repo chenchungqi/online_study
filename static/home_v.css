@@ -1,0 +1,26 @@
+body {
+    background-image:url('/static/images/blue_bg.png');
+    /*background-repeat:no-repeat;*/
+    /*background-size:1604px 845px;*/
+    /*height: 845px;*/
+    /*width: 1604px;*/
+    background-size:cover;
+}
+
+.blue_fairy {
+    background-image:url('/static/images/blue_fairy.png');
+    background-size: 146px 356px;
+    height: 356px;
+    width: 146px;
+    position: absolute;
+    left: 50px;
+    bottom: 10px;
+}
+.hello {
+    background-image:url('/static/images/hello.png');
+    height: 174px;
+    width: 396px;
+    position: absolute;
+    top: 100px;
+    right: 100px;
+}

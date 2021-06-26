@@ -7,8 +7,10 @@
 {% load staticfiles %}
 {% block hearder_extends %}
     <link rel="stylesheet" href="{% static 'math_practice.css' %}">
+    {% if user.is_staff %}
+        <link rel="stylesheet" href="{% static 'math_practice_v.css' %}">
+    {% endif %}
     <link rel="stylesheet" href="{% static 'xcConfirm.css' %}">
-    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/jquery.pietimer.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/xcConfirm.js' %}"></script>
 {% endblock %}
@@ -30,11 +32,8 @@
                     <p id="messageInfo2"></p>
                     <p id="messageInfo"></p>
                 </div>
-                <div class="demo">
-{#                    <p><a href="#" id="start" class="btn">开始</a> <a href="#" id="pause" class="btn">暂停</a></p>#}
-{#                    <br/>#}
-                    <p id="demo"></p>
-                    <p class="boom">时间到！</p>
+                <div class="timeout">
+                    <p id="timeout"></p>
                 </div>
             </div>
             <div class="functionBtn_part">
@@ -61,6 +60,7 @@
             <button type="button" class="btn btn-success btn_extra2" id="a_btn"> OK</button>
         </div>
     </div>
+    <div class="green_fairy_go" id="fairy_position"></div>
 {% endblock %}
 
 {% block script_extends %}
@@ -72,16 +72,21 @@
         var tempData_list;
         var correct_nums = 0;
         var false_nums = 0;
-        var each_group_counts = 20;  //每组的题数
+        var each_group_counts = 5;  //每组的题数
+        var timeout_flag =0;
+        var tom;
+        var continuiltyCorrect =0;
         $("#start_learn").click(function(){
             startDate = new Date();
             //置空全局变量
             tempData_list = [];
             correct_nums=0;
             false_nums=0;
+            timeout_flag =0;
             $("#messageInfo1").text('');
             $("#messageInfo2").text('');
             $("#messageInfo").text('');
+            $("#fairy_position").removeClass();
             $.ajax({
                 url: "{% url 'get_study_model' %}",
                 type: 'GET',
@@ -91,20 +96,47 @@
                 cache: false,
                 success: function (data){
                     if(data['status']=='SUCCESS'){
-                        var questionAnswer = data['question_list'][0].split('=')
+                        var questionAnswer = data['question_list'][0].split('=');
+                        //console.log("data['question_list'][0]=" +data['question_list'][0]);
+                        var t_level = questionAnswer[1].split('&')[1];
+                        if(t_level =='T6' || t_level =='T7' || t_level =='T8' || t_level =='T9'){
+                            $("#messageInfo1").text('Tips:除不尽请结果保留2位小数.');
+                        }
+                        // 设置倒计时,根据难度
+                        if(t_level =='T1' || t_level =='T2' || t_level =='T3'){
+                            var timeoutnum = 20;
+                        }else if(t_level =='T4' || t_level =='T5' || t_level =='T6'){
+                            var timeoutnum = 40;
+                        }else if(t_level =='T7' || t_level =='T8' || t_level =='T9'){
+                            var timeoutnum = 90;
+                        }
+                        $('#timeout').pietimer({
+                            seconds: timeoutnum,
+                            color: 'rgba(0, 0, 0, 0.8)',
+                            height: 100,
+                            width: 100
+                        },function(){
+                            //回调 超时
+                            {#console.log('1111');#}
+                            {#timeout_flag = 1;#}
+                        });
+
+                        tom =setTimeout("change_timout_flag()", timeoutnum*1000);
+
+                        $('#timeout').pietimer('start');
                         // 分离出所属题目的难度，根据难度生成所需时间，并开始计时
                         $("#question_place").text(questionAnswer[0]+' =');
                         tempData_list = data['question_list'];
                     }else{
                         alert(data['message']);
                     }
-                    console.log(data)
+                    //console.log(data)
                 },
                 error: function (xhr){
                     console.log(xhr)
                 }
             });
-            $("#take_a_break").removeAttr('disabled');
+
             $("#start_learn").attr('disabled', 'disabled');
             document.getElementById('input_area').focus();
         });
@@ -112,9 +144,18 @@
             var endDate = new Date();
             $("#start_learn").removeAttr('disabled');
             $("#take_a_break").attr('disabled', 'disabled');
+            $("#fairy_position").removeClass();
+            $("body").removeClass();
             var total_learning_time = diffTime(startDate, endDate);
             var correct_percent = correct_nums/each_group_counts*100;
             $("#messageInfo1").text('你的正确率是:'+correct_percent+'%');
+            $('#timeout').pietimer({
+                seconds: 0,
+                color: 'rgba(0, 0, 0, 0.8)',
+                height: 0,
+                width: 0
+            },function(){
+            });
             $.ajax({
                 url: "{% url 'update_lottery_count' %}",
                 type: 'GET',
@@ -143,8 +184,11 @@
             $("#messageInfo").text(total_learning_time);
         });
         $("#a_btn").click(function(){
+            $("#fairy_position").removeClass();
+            $("body").removeClass();
             $("#messageInfo1").text('');
             $("#messageInfo2").text('');
+            clearTimeout(tom);
             var input_answer = document.getElementsByClassName('input_answer')[0].value;
             document.getElementById('input_area').focus();
             var correct_answer_withmark = tempData_list[0].split('=')[1];
@@ -165,29 +209,82 @@
                 cache: false,
                 success: function (context){
                     if(context['status']=='RIGHT'){
-                        $("#messageInfo1").text('Correct!');
+                        //$("#messageInfo1").text('Correct!');
                         correct_nums +=1;
+                        continuiltyCorrect +=1;
+                        if (continuiltyCorrect >= 5){
+                            $("#fairy_position").addClass("purple_fairy");
+                            $("body").addClass("purple_bg");
+                        }else{
+                             if (timeout_flag == 0){
+                                $("#fairy_position").addClass("green_fairy");
+                                $("body").addClass("green_bg");
+                            }else{
+                                $("#fairy_position").addClass("yellow_fairy");
+                                $("body").addClass("yellow_bg");
+                                timeout_flag =0;
+                            }
+                        }
                     }else{
-                        $("#messageInfo1").text('Sorry,wrong answer.');
+                        //$("#messageInfo1").text('Sorry,wrong answer.');
                         $("#messageInfo2").text('Correct answer is:'+context['rightAnswer']);
+                        $("#fairy_position").addClass("red_fairy");
+                        $("body").addClass("red_bg");
                         false_nums +=1;
+                        continuiltyCorrect =0;
                     }
                     if (tempData_list == ''){
                         $("#question_place").text('');
                         $("#messageInfo1").text('');
                         $("#messageInfo2").text('');
                         window.wxc.xcConfirm('你这组已经学完，休息一下吧。', window.wxc.xcConfirm.typeEnum.info);
+                        $("#take_a_break").removeAttr('disabled');
+                        $('#timeout').pietimer({
+                            seconds: 0,
+                            color: 'rgba(0, 0, 0, 0.8)',
+                            height: 0,
+                            width: 0
+                        },function(){
+                        });
                     }else{
                         console.log('tempData_list='+tempData_list)
                         var questionAnswer = tempData_list[0].split('=');
+                        var t_level = questionAnswer[1].split('&')[1];
+                        if(t_level =='T6' || t_level =='T7' || t_level =='T8' || t_level =='T9'){
+                            $("#messageInfo1").text('Tips:除不尽请结果保留2位小数.');
+                        }
                         $("#question_place").text(questionAnswer[0] + '=');
+
+                        // 设置倒计时,根据难度
+                        if(t_level =='T1' || t_level =='T2' || t_level =='T3'){
+                            var timeoutnum = 20;
+                        }else if(t_level =='T4' || t_level =='T5' || t_level =='T6'){
+                            var timeoutnum = 40;
+                        }else if(t_level =='T7' || t_level =='T8' || t_level =='T9'){
+                            var timeoutnum = 90;
+                        }
+                        $('#timeout').pietimer({
+                            seconds: timeoutnum,
+                            color: 'rgba(0, 0, 0, 0.8)',
+                            height: 100,
+                            width: 100
+                        },function(){
+                            //回调 超时
+                            {#console.log('111');#}
+                            {#timeout_flag = 1;#}
+                            {#return false;#}
+                        });
+                        $('#timeout').pietimer('start');
+                        tom =setTimeout("change_timout_flag()", timeoutnum*1000);
                         // tempData_list = context['question_list'];
                     }
                     $("#input_area").val('');
-                    console.log(context)
+                    //console.log(context)
+                    return false;
                 },
                 error: function (xhr){
                     console.log(xhr)
+                    return false;
                 }
             });
         });
@@ -244,25 +341,10 @@
             input_box.value = input_box.value.substr(0, input_box.value.length - 1);
         });
 
-        $('.boom').hide();
-        $('#demo').pietimer({
-            seconds: 60,
-            color: 'rgba(0, 0, 0, 0.8)',
-            height: 100,
-            width: 100
-        },function(){
-            $('.boom').show('slow');
-        });
-        $('a#start').click(function(){
-            $('.boom').hide();
-            $('#demo').pietimer('start');
+        function change_timout_flag(){
+            timeout_flag = 1;
             return false;
-        });
-        $('a#pause').click(function(){
-            $('#demo').pietimer('pause');
-            return false;
-        });
-
+        }
         function diffTime(startDate,endDate) {
             var diff=endDate.getTime() - startDate;//.getTime();//时间差的毫秒数
 

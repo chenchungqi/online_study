@@ -1,0 +1,77 @@
+/*body {*/
+/*    background-image:url('/static/images/blue_bg.png');*/
+/*    !*background-repeat:no-repeat;*!*/
+/*    !*background-size:1604px 845px;*!*/
+/*    !*height: 845px;*!*/
+/*    !*width: 1604px;*!*/
+/*    background-size:cover;*/
+/*}*/
+
+.green_fairy_go {
+    background-image:url('/static/images/green_fairy_go.png');
+    background-size: 250px 350px;
+    height: 350px;
+    width: 250px;
+    position: absolute;
+    left: 50px;
+    top: 400px;
+}
+.green_fairy {
+    background-image:url('/static/images/green_fairy.png');
+    background-size: 250px 350px;
+    height: 350px;
+    width: 250px;
+    position: absolute;
+    left: 50px;
+    top: 400px;
+}
+
+.green_bg {
+    background-image:url('/static/images/green_bg.png');
+    background-size:cover;
+}
+
+.red_fairy {
+    background-image:url('/static/images/red_fairy.png');
+    background-size: 250px 350px;
+    height: 350px;
+    width: 250px;
+    position: absolute;
+    left: 50px;
+    top: 400px;
+}
+.red_bg {
+    background-image:url('/static/images/red_bg.png');
+    background-size:cover;
+}
+.timeout {
+    position: absolute;
+    top: 400px;
+    left: 600px;
+}
+.yellow_fairy {
+    background-image:url('/static/images/yellow_fairy.png');
+    background-size: 250px 350px;
+    height: 350px;
+    width: 250px;
+    position: absolute;
+    left: 50px;
+    top: 400px;
+}
+.yellow_bg {
+    background-image:url('/static/images/yellow_bg.png');
+    background-size:cover;
+}
+.purple_fairy {
+    background-image:url('/static/images/purple_fairy.png');
+    background-size: 250px 350px;
+    height: 350px;
+    width: 250px;
+    position: absolute;
+    left: 50px;
+    top: 400px;
+}
+.purple_bg {
+    background-image:url('/static/images/purple.png');
+    background-size:cover;
+}

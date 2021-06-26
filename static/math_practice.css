@@ -25,7 +25,7 @@ div.title_one {
 
 .question_part {
     display: block;
-    height: 40%;
+    height: 30%;
     width: 100%;
 }
 #question_place {
@@ -102,7 +102,7 @@ div.title_one {
 #messageInfo1 {
     font-size: 200%;
     line-height: 50px;
-    padding-left: 50px;
+    padding-left: 30px;
 }
 #messageInfo2 {
     font-size: 150%;
