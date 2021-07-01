@@ -15,11 +15,11 @@ class Profile(models.Model):
     group_question_sum = models.IntegerField(verbose_name='题组数', default=0)
     cquestion_sum = models.IntegerField(verbose_name='正确题目数', default=0)
     wquestion_sum = models.IntegerField(verbose_name='错误题目数', default=0)
-    achievement_title = models.CharField(max_length=100, verbose_name='成就', default='')
+    achievement_title = models.CharField(max_length=100, verbose_name='成就', default='暂无')
     diamond = models.IntegerField(verbose_name='钻石', default=0)
     diamond_pieces = models.IntegerField(verbose_name='宝石碎片', default=0)
     stay_methodPage_time = models.IntegerField(verbose_name='页面时长', default=0)
-    lottery_model = models.CharField(max_length=200, verbose_name='抽奖模型', default='')
+    lottery_model = models.CharField(max_length=200, verbose_name='抽奖模型', default='暂无')
 
 
     def __str__(self):

@@ -215,7 +215,9 @@
                 cache: false,
                 success: function (context){
                     if(context['status']=='RIGHT'){
-                        //$("#messageInfo1").text('Correct!');
+                        if(context['staff']!='True'){
+                            $("#messageInfo").text('Correct!');
+                        }
                         correct_nums +=1;
                         continuiltyCorrect +=1;
                         if (continuiltyCorrect >= 5){
@@ -232,7 +234,9 @@
                             }
                         }
                     }else{
-                        //$("#messageInfo1").text('Sorry,wrong answer.');
+                        if(context['staff']!='True'){
+                            $("#messageInfo").text('Sorry,wrong answer.');
+                        }
                         $("#messageInfo2").text('Correct answer is:'+context['rightAnswer']);
                         $("#fairy_position").addClass("red_fairy");
                         $("body").addClass("red_bg");

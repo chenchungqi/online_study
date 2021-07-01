@@ -18,29 +18,29 @@ def chengjiu_main(request):
     context = {}
     user = request.user
     already_get = user.profile.achievement_title
-    print(already_get)
+    #print(already_get)
     if already_get.find('开端') != -1:
-        print('开端')
+        #print('开端')
         context['time_chengjiu1'] = 1
     else:
         context['time_chengjiu1'] = 0
     if already_get.find('渐入佳境') != -1:
-        print('渐入佳境')
+        #print('渐入佳境')
         context['time_chengjiu2'] = 1
     else:
         context['time_chengjiu2'] = 0
     if already_get.find('坚持的旅行者') != -1:
-        print('坚持的旅行者')
+        #print('坚持的旅行者')
         context['time_chengjiu3'] = 1
     else:
         context['time_chengjiu3'] = 0
     if already_get.find('精灵见了直呼内行') != -1:
-        print('精灵见了直呼内行')
+        #print('精灵见了直呼内行')
         context['time_chengjiu4'] = 1
     else:
         context['time_chengjiu4'] = 0
     if already_get.find('废寝忘食的旅行者') != -1:
-        print('废寝忘食的旅行者')
+        #print('废寝忘食的旅行者')
         context['time_chengjiu5'] = 1
     else:
         context['time_chengjiu5'] = 0
@@ -58,7 +58,12 @@ def chengjiu_main(request):
     for i in range(1, 5):
         if get_correctnum_rank_list[i].user == user.profile.user:
             context['call_me_NO2'] = 1
-
+    # for i in range(5, 10):
+    #     if get_correctnum_rank_list[i].user == user.profile.user:
+    #         context['call_me_NO3'] = 1
+    # for i in range(10, 20):
+    #     if get_correctnum_rank_list[i].user == user.profile.user:
+    #         context['call_me_NO4'] = 1
 
     # if get_correctnum_rank_list[0].user == user.profile.user:
     #     context['call_me_NO3'] = 1

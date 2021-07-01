@@ -438,7 +438,9 @@ def math_practice_main(request):
         question_mark = request.POST.get('question_mark', '')
         tempData = request.POST.get('tempData', '')
         user = request.user
-        print('input_answer='+input_answer,'correct_answer='+correct_answer,'tempData_list='+tempData,'question_mark='+question_mark)
+        if user.is_staff:
+            context['staff'] = 'True'
+        #print('input_answer='+input_answer,'correct_answer='+correct_answer,'tempData_list='+tempData,'question_mark='+question_mark)
         if type(input_answer) == str:
             input_answer = eval(input_answer)
         if type(correct_answer) == str:

@@ -18,7 +18,7 @@ def del_lottery_count(request):
 
     lotteryModel_str = profile.lottery_model
     #print(lotteryModel_str)
-    if lotteryModel_str == '':
+    if lotteryModel_str == '' or lotteryModel_str == '暂无':
         lotteryModel_str = '0,1,1,1,1,1,4,4,4,4,4,2,2,2,2,5,5,5,5,5'
         lotteryModel_list = lotteryModel_str.split(',')
         random.shuffle(lotteryModel_list)
