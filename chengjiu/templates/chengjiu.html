@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title%}
+    我的网站|成就页面
+{% endblock %}
+
+{% block hearder_extends %}
+    <link rel="stylesheet" href="{% static 'chengjiu.css' %}">
+{% endblock %}
+
+{% block content%}
+<table>
+    <tr>
+        <td class="title">时间成就</td>
+        <td class="title">个人排名</td>
+        <td class="title">TOP10</td>
+    </tr>
+    <tr>
+        {% if time_chengjiu1 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">开端</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">开端</button></td>
+        {% endif %}
+        {% if call_me_NO5 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">冉冉升起的收集之星</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">冉冉升起的收集之星</button></td>
+        {% endif %}
+    </tr>
+    <tr>
+        {% if time_chengjiu2 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">渐入佳境</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">渐入佳境</button></td>
+        {% endif %}
+        {% if call_me_NO4 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">收集高手</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">收集高手</button></td>
+        {% endif %}
+    </tr>
+    <tr>
+        {% if time_chengjiu3 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">坚持的旅行者</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">坚持的旅行者</button></td>
+        {% endif %}
+        {% if call_me_NO3 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">收集精英</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">收集精英</button></td>
+        {% endif %}
+    </tr>
+    <tr>
+        {% if time_chengjiu4 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">精灵见了直呼内行</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">精灵见了直呼内行</button></td>
+        {% endif %}
+        {% if call_me_NO2 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">专家收集者</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">专家收集者</button></td>
+        {% endif %}
+    </tr>
+    <tr>
+        {% if time_chengjiu5 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">废寝忘食的旅行者</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">废寝忘食的旅行者</button></td>
+        {% endif %}
+        {% if call_me_NO1 == 1 %}
+            <td><button type="button" class="btn btn-warning  btn_large">巅峰收集家</button></td>
+        {% else %}
+            <td><button type="button" class="btn btn-default disabled btn_large">巅峰收集家</button></td>
+        {% endif %}
+    </tr>
+</table>
+    <!-- 图表容器 DOM -->
+    <ul class="personal_rank_display">
+        {% for personal_rank in individual_rank %}
+            <li class="personal_rank_display_main">{{ personal_rank.nickname }}
+                ({{ personal_rank.cquestion_sum }})</li>
+        {% empty %}
+            <li>暂时没有用户</li>
+        {% endfor %}
+    </ul>
+{#    </div>#}
+{#    <div class="hot-data">#}
+{#    <h3>昨日热门点击</h3>#}
+{#    <ul>#}
+{#        {% for hot_data in yesterday_hot_data %}#}
+{#            <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>#}
+{#                ({{ hot_data.read_num }})</li>#}
+{#        {% empty %}#}
+{#            <li>昨天暂时没有热门博客</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    </div>#}
+{#    <div class="hot-data">#}
+{#    <h3>7天热门博客</h3>#}
+{#    <ul>#}
+{#        {% for hot_blog in hot_blogs_for_7_days %}#}
+{#            <li><a href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a>#}
+{#                ({{ hot_blog.read_num_sum }})</li>#}
+{#        {% empty %}#}
+{#            <li>近7天没有热门博客</li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#    </div>#}
+
+
+{% endblock %}
+
+{% block script_extends %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}

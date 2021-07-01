@@ -75,3 +75,12 @@
     background-image:url('/static/images/purple.png');
     background-size:cover;
 }
+#chengjiu_rukou {
+    background-image:url('/static/images/chengjiu_btn.jpg');
+    background-size: 60px 220px;
+    height: 220px;
+    width: 60px;
+    position: absolute;
+    right: 70px;
+    bottom: 120px;
+}

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'lottery',
     'math_practice',
     'likes',
+    'chengjiu'
 ]
 
 MIDDLEWARE = [

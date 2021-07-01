@@ -33,6 +33,9 @@
                 <li class="{% block nav_math_active %}{% endblock %}"><a href="{% url 'math_practice_main' %}">口算训练</a></li>
                 {% if user.is_staff %}
                     <li class="{% block nav_lottery_active %}{% endblock %}"><a href="{% url 'lottery_view' %}">抽奖界面</a></li>
+                    <li class="{% block nav_method_active %}{% endblock %}"><a href="{% url 'method_main' %}">精灵秘籍</a></li>
+                {% else %}
+                    <li><a href="{% url 'method_main' %}">策略</a></li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">

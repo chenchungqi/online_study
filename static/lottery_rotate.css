@@ -55,8 +55,10 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 
 .turntable-bg {
+  background-image:url('/static/images/dazhuanpan.png');
+  background-size: 650px 650px;
   width: 650px;
-  height: 600px;
+  height: 650px;
   margin: 0 auto;
   position: relative;
 }
@@ -68,20 +70,24 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   top: 60px;
   /*z-index:9;*/
 }
-.turntable-bg .pointer {
-  width: 174px;
-  height: 228px;
+.pointer {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  margin-left: -67px;
-  margin-top: -144px;
+  left: 41%;
+  top: 40%;
   z-index: 8;
 }
 .turntable-bg .rotate {
-  width: 450px;
-  height: 450px;
-  position: absolute;
-  left: 116px;
-  top: 60px;
+  width: 580px;
+  height: 580px;
+  position: relative;
+  margin: 0 auto;
+  padding-top: 35px;
+}
+#rotate {
+  width: 580px;
+  height: 580px;
+}
+#pointer {
+  width: 130px;
+  height: 130px;
 }

@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static 'lottery.css' %}">
     <link rel="stylesheet" href="{% static 'lottery_rotate.css' %}">
     <link rel="stylesheet" href="{% static 'xcConfirm.css' %}">
-    <script type="text/javascript" src="{% static 'js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/awardRotate.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/xcConfirm.js' %}"></script>
 {% endblock %}
@@ -18,39 +17,21 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
-                <div class="panel panel-default">
-                    <div class="panel-heading">抽奖界面</div>
-                    <div class="panel-body">
-                        <div class="lottery_body" >
-                            <div class="turntable-bg" style="background: url({% static 'images/turntable-bg.jpg' %})">
-                                <div class="pointer"><img src="{% static 'images/pointer.png' %}" alt="pointer"/></div>
-                                <div class="rotate" ><img id="rotate" src="{% static 'images/turntable.png' %}" alt="turntable"/></div>
-                            </div>
-                        </div>
+                <div class="lottery_body" >
+                    <div class="turntable-bg">
+                        <div class="pointer"><img id="pointer" src="{% static 'images/1zhizhen.png' %}" alt="pointer"/></div>
+                        <div class="rotate" ><img id="rotate" src="{% static 'images/xiaozhuanpan.png' %}" alt="turntable"/></div>
                     </div>
                 </div>
             </div>
             <div class="hidden-xs col-sm-4 col-md-3 col-lg-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">个人信息</div>
-                    <div class="panel-body">
-                        {% if user.is_authenticated %}
-                            <ul class="user_info">
-                                <li>昵称：{{ user.profile.nickname }}</li>
-                                <li>能量：<span id="lotteryCount">{{ user.profile.lotteryCount }}</span></li>
-                                <li>年级:{{ user.profile.grade_class }} </li>
-                                <li>做题总数:{{ user.profile.question_num }} </li>
-                                <li>学习时长:{{ user.display_time_diff }} </li>
-                                <li><a href="#">刷新个人信息</a></li>
-                            </ul>
-                        {% else %}
-                            <span>未登录，跳转到首页.....</span>
-                            <script type="text/javascript">
-                                window.location.href = '/';
-                            </script>
-                        {% endif %}
-                    </div>
-                </div>
+                <div class="go_img"></div>
+                <ul class="user_info">
+                    <li>昵称：{{ user.profile.nickname }}</li>
+                    <li>剩余能量：<span id="lotteryCount">{{ user.profile.lotteryCount }}</span></li>
+                    <li>精灵宝石: <span id="diamondCount">{{ user.profile.diamond }}</span></li>
+                    <li>宝石碎片: <span id="diamondPiecesCount">{{ user.profile.diamond_pieces }}</span></li>
+                </ul>
             </div>
         </div>
     </div>
@@ -59,7 +40,7 @@
 {% block script_extends %}
 <script type="text/javascript">
 $(function (){
-
+    var lottery_item;
 	var rotateTimeOut = function (){
 		$('#rotate').rotate({
 			angle:0,
@@ -81,6 +62,31 @@ $(function (){
 			duration:8000,
 			callback:function (){
 				// alert(txt);
+                if (awards == 3){
+                    txt = get_choose_txt()
+                }
+                if(awards == 1 || awards == 2){
+                    $.ajax({
+                        url: "{% url 'save_lottery_prize' %}",
+                        type: 'GET',
+                        data: {
+                            awards: awards,
+                        },
+                        cache: false,
+                        success: function (data){
+                            if (awards == 1){
+                                $("#diamondCount").text(data['diamondCount']);
+                            }
+                            if (awards == 2){
+                                $("#diamondPiecesCount").text(data['diamondPiecesCount']);
+                            }
+                            console.log(data)
+                        },
+                        error: function (xhr){
+                            console.log(xhr)
+                        }
+                    });
+                }
                 window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.info);
 				bRotate = !bRotate;
 			}
@@ -90,8 +96,8 @@ $(function (){
 	$('.pointer').click(function (){
 
 		if(bRotate)return;
-		// 获取用户的抽奖次数lotteryCount
 
+		// 获取用户的抽奖次数lotteryCount
         var user_lottery_count = document.getElementById('lotteryCount').innerText;
         if (parseInt(user_lottery_count)<=0){
             alert('剩余抽奖次数不足');
@@ -101,60 +107,69 @@ $(function (){
                 url: "{% url 'del_lottery_count' %}",
                 type: 'GET',
                 data: {
-
                 },
                 cache: false,
                 success: function (data){
-                    console.log(data)
+                    console.log('111111')
                     $("#lotteryCount").text(data['last_count']);
+                    lottery_item =data['now_lottery']
+                    lottery_item = lottery_item *1;
+                    console.log('lottery_item='+lottery_item);
+                    switch (lottery_item) {
+                        case 0:
+                            //var angle = [26, 88, 137, 185, 235, 287, 337];
+                            rotateFn(1, 30, '精灵宝石');
+                            break;
+                        case 1:
+                            //var angle = [88, 137, 185, 235, 287];
+                            rotateFn(2, 170, '宝石碎片');
+                            break;
+                        case 2:
+                            //var angle = [137, 185, 235, 287];
+                            rotateFn(3, 95, '能量气息');
+                            break;
+                        case 3:
+                            //var angle = [137, 185, 235, 287];
+                            rotateFn(1, 195, '精灵宝石');
+                            break;
+                        case 4:
+                            //var angle = [185, 235, 287];
+                            rotateFn(2, 350, '宝石碎片');
+                            break;
+                        case 5:
+                            //var angle = [185, 235, 287];
+                            rotateFn(3, 270, '能量气息');
+                            break;
+                    }
                 },
                 error: function (xhr){
                     console.log(xhr)
                 }
             });
+
         // 抽奖的伪随机代码更改位置
-		var item = rnd(0,7);
+		//var item = rnd(0,5);
+		// 概率设定
+        {#生成一组列表包含20个元素，位置随机排列#}
+        {#宝石1个#}
+        {#宝石碎片10个#}
+        {#能量气息9个#}
+        {#抽取一次则减少一个元素#}
+        {##}
+        {#20次后刷新列表#}
 
-		switch (item) {
-			case 0:
-				//var angle = [26, 88, 137, 185, 235, 287, 337];
-				rotateFn(0, 337, '未中奖');
-				break;
-			case 1:
-				//var angle = [88, 137, 185, 235, 287];
-				rotateFn(1, 26, '免单4999元');
-				break;
-			case 2:
-				//var angle = [137, 185, 235, 287];
-				rotateFn(2, 88, '免单50元');
-				break;
-			case 3:
-				//var angle = [137, 185, 235, 287];
-				rotateFn(3, 137, '免单10元');
-				break;
-			case 4:
-				//var angle = [185, 235, 287];
-				rotateFn(4, 185, '免单5元');
-				break;
-			case 5:
-				//var angle = [185, 235, 287];
-				rotateFn(5, 185, '免单5元');
-				break;
-			case 6:
-				//var angle = [235, 287];
-				rotateFn(6, 235, '免分期服务费');
-				break;
-			case 7:
-				//var angle = [287];
-				rotateFn(7, 287, '提高白条额度');
-				break;
-		}
-
-		console.log(item);
 	});
 });
 function rnd(n, m){
 	return Math.floor(Math.random()*(m-n+1)+n)
+}
+function get_choose_txt(){
+    var txt_list = ['好像有什么东西飞走了，再试试吧！','很遗憾，这次空手而归','很遗憾，这次空手而归','好像感受到了宝石的气息','好像感受到了宝石的气息',
+                    '纸条：“今天下雪路很滑，有一位老精灵摔倒了，一位热心的小精灵跑过去扶，没想到他也摔倒了，结果把老精灵踹得更远了。”',
+                    '纸条：“每个保卫精灵都是哲学家。他们每天都在提出哲学届的三个终极问题：你是谁？你从哪里来？你到哪里去？”',
+                    '纸条：“气象局的精灵把动物园的大象活活气死了.”',
+                    '纸条：“大精灵说:"儿子，帮我把计算器拿过来。"小精灵答: "你算什么东西?"然后小精灵就被揍了一顿狠的。”'];
+    return txt_list[rnd(0,8)];
 }
 </script>
 {% endblock %}

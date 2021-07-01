@@ -29,5 +29,5 @@ admin.site.register(User, UserAdmin)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'nickname', 'grade_class', 'question_difficulty', 'question_num', 'total_time', 'cquestion_sum', 'wquestion_sum', 'lotteryCount', 'user_study_mode','diamond')
+    list_display = ('user', 'nickname', 'grade_class', 'question_difficulty', 'question_num', 'total_time', 'cquestion_sum', 'wquestion_sum', 'lotteryCount', 'user_study_mode','diamond','stay_methodPage_time','diamond_pieces','lottery_model')
 

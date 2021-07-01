@@ -121,8 +121,8 @@ def question_t4(count):
         else:
             while True:
                 first = random.randint(1, 10000)
-                second = random.randint(1, 10000)
-                third = random.randint(1, 10000)
+                second = random.randint(1, 1000)
+                third = random.randint(1, 1000)
                 if operator1 == '-':
                     if first < second:
                         first, second = second, first
@@ -147,7 +147,7 @@ def question_t5(count):
             operator = random.choice('*/')
             if operator == '*':
                 first = random.randint(0, 999)
-                second = random.randint(0, 999)
+                second = random.randint(0, 100)
                 r = str(first) + operator + str(second) + ' ='
                 answer = eval(str(first) + operator + str(second))
             if operator == '/':
@@ -508,79 +508,79 @@ def get_study_model(request):
 def update_lottery_count(request):
     correct_rates = request.GET.get('correct_rates')
     learning_time = request.GET.get('total_learning_time')
+    user = request.user
+    questionDifficulty = user.profile.question_difficulty
+    print(questionDifficulty)
+    print(type(questionDifficulty))
+    print(learning_time)
+    print(type(learning_time))
+    questionDifficulty_Alist = [200000, 200000, 200000, 320000, 400000, 440000, 640000, 720000, 800000]
+    questionDifficulty_Clist = [400000, 400000, 400000, 500000, 600000, 640000, 920000, 1040000, 1140000]
+    addCount = 0
     if int(correct_rates) == 100:
-        addCount = 3
+        addCount += 2
         score = '评分为:S'
         # 升级
-        user = request.user
-        if user.profile.question_difficulty < 8:
+        if questionDifficulty < 8:
             user.profile.question_difficulty += 1
             user.profile.save()
-    elif int(correct_rates) >= 80:
-        addCount = 2
+    elif int(correct_rates) >= 90:
+        addCount += 1
         score = '评分为:A'
         # 升级
-        user = request.user
-        if user.profile.question_difficulty < 8:
+        if questionDifficulty < 8 and int(learning_time) < questionDifficulty_Alist[questionDifficulty]:
+            print('评分为:A,并且答题速度快，升级')
+            if questionDifficulty > 6:
+                addCount += 3
+            elif questionDifficulty > 3:
+                addCount += 2
+            else:
+                addCount += 1
             user.profile.question_difficulty += 1
             user.profile.save()
     elif int(correct_rates) >= 60:
-        addCount = 1
         score = '评分为:B'
-        user = request.user
     else:
-        user = request.user
-        if int(correct_rates) <= 40:
-            # 降级
-            if user.profile.question_difficulty > 0:
+        if int(correct_rates) < 60:
+            if questionDifficulty > 0 and int(learning_time) > questionDifficulty_Clist[questionDifficulty]:
+                print('评分为:C,并且答题速度慢，降级')
                 user.profile.question_difficulty -= 1
                 user.profile.save()
-        addCount = 0
         score = '评分为:C'
     profile, created = Profile.objects.get_or_create(user=request.user)
     profile.lotteryCount += addCount
     profile.group_question_sum += 1
     profile.total_time += int(learning_time)
-    print(profile.total_time)
-    print(user.is_staff)
+    # print(profile.total_time)
+    # print(user.is_staff)
     tips = ''
     if user.is_staff:
         chengjiu = profile.achievement_title
         totalTime = profile.total_time
-        if int(totalTime) >= 10800000:
-            if chengjiu.find('高级体能收集大师') == -1:
-                profile.achievement_title += ',高级体能收集大师'
+        if int(totalTime) >= 3600000:
+            if chengjiu.find('废寝忘食的旅行者') == -1:
+                profile.achievement_title += ',废寝忘食的旅行者'
                 profile.lotteryCount += 1
-                tips = '高级体能收集大师'
-        elif int(totalTime) >= 9000000:
-            if chengjiu.find('废寝忘食') == -1:
-                profile.achievement_title += ',废寝忘食'
-                profile.lotteryCount += 2
-                tips = '废寝忘食'
-        elif int(totalTime) >= 7200000:
+                tips = '废寝忘食的旅行者'
+        elif int(totalTime) >= 2400000:
             if chengjiu.find('精灵见了直呼内行') == -1:
                 profile.achievement_title += ',精灵见了直呼内行'
-                profile.lotteryCount += 5
+                profile.lotteryCount += 1
                 tips = '精灵见了直呼内行'
-        elif int(totalTime) >= 5400000:
-            if chengjiu.find('坚持的决心') == -1:
-                profile.achievement_title += ',坚持的决心'
-                profile.lotteryCount += 8
-                tips = '坚持的决心'
-        elif int(totalTime) >= 3600000:
-            if chengjiu.find('专注收集者') == -1:
-                profile.achievement_title += ',专注收集者'
-                profile.lotteryCount += 10
-                tips = '专注收集者'
         elif int(totalTime) >= 1800000:
-            if chengjiu.find('专心收集者') == -1:
-                profile.achievement_title += ',专心收集者'
-                profile.lotteryCount += 15
-                tips = '专心收集者'
+            if chengjiu.find('坚持的旅行者') == -1:
+                profile.achievement_title += ',坚持的旅行者'
+                profile.lotteryCount += 1
+                tips = '坚持的旅行者'
+        elif int(totalTime) >= 1200000:
+            if chengjiu.find('渐入佳境') == -1:
+                profile.achievement_title += ',渐入佳境'
+                profile.lotteryCount += 1
+                tips = '渐入佳境'
         elif int(totalTime) >= 600000:
             if chengjiu.find('开端') == -1:
                 profile.achievement_title += '开端'
-                profile.lotteryCount += 20
+                profile.lotteryCount += 1
                 tips = '开端'
         else:
             pass

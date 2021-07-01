@@ -10,9 +10,9 @@
     {% if user.is_staff %}
         <link rel="stylesheet" href="{% static 'math_practice_v.css' %}">
     {% endif %}
-    <link rel="stylesheet" href="{% static 'xcConfirm.css' %}">
     <script type="text/javascript" src="{% static 'js/jquery.pietimer.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/xcConfirm.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'xcConfirm.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -61,6 +61,7 @@
         </div>
     </div>
     <div class="green_fairy_go" id="fairy_position"></div>
+    <a href="{% url 'chengjiu_main' %}"><div id="chengjiu_rukou"></div></a>
 {% endblock %}
 
 {% block script_extends %}
@@ -72,10 +73,16 @@
         var tempData_list;
         var correct_nums = 0;
         var false_nums = 0;
-        var each_group_counts = 5;  //每组的题数
+        var each_group_counts = 20;  //每组的题数
         var timeout_flag =0;
         var tom;
         var continuiltyCorrect =0;
+        var message_box = ['牢牢记住几条运算律是非常必要的！','A+B=B+A，有什么用？8+3+2=8+2+3，悟了吧！',
+        'A+（B+C）=（A+B）+C，（2+6）+8=（2+8）+6，凑整神器。','能够灵活运用各条运算律也是非常重要的。',
+        'A×B=B×A，交换一下，计算可能更轻松,，如4×6×2=4×2×6','（A×B）×C=A×（B×C），如（4×6）×5=4×（6×5），是不是更简单了？',
+        '（A+B）×C=A×C+B×C，如（4+25）×4=4×4+25×4','减法是加法的逆运算','除法是乘法的逆运算','分数式子是特殊的除法算式表示',
+        '凑十凑整，灵活变换；如23+46+57=23+57+46','特殊式株，牢记心中；如125×8=1000；25×4=100；12×5=60；九九乘法表',
+        '如凑整，加大则减，加小则加；减大则加，减小则减：','整数小数分数，运算技巧通用','进退位算清，运算要细心','遇到除不尽请结果保留2位小数.']
         $("#start_learn").click(function(){
             startDate = new Date();
             //置空全局变量
@@ -99,9 +106,8 @@
                         var questionAnswer = data['question_list'][0].split('=');
                         //console.log("data['question_list'][0]=" +data['question_list'][0]);
                         var t_level = questionAnswer[1].split('&')[1];
-                        if(t_level =='T6' || t_level =='T7' || t_level =='T8' || t_level =='T9'){
-                            $("#messageInfo1").text('Tips:除不尽请结果保留2位小数.');
-                        }
+                        show_specil_tips(t_level);
+
                         // 设置倒计时,根据难度
                         if(t_level =='T1' || t_level =='T2' || t_level =='T3'){
                             var timeoutnum = 20;
@@ -250,9 +256,7 @@
                         console.log('tempData_list='+tempData_list)
                         var questionAnswer = tempData_list[0].split('=');
                         var t_level = questionAnswer[1].split('&')[1];
-                        if(t_level =='T6' || t_level =='T7' || t_level =='T8' || t_level =='T9'){
-                            $("#messageInfo1").text('Tips:除不尽请结果保留2位小数.');
-                        }
+                        show_specil_tips(t_level);
                         $("#question_place").text(questionAnswer[0] + '=');
 
                         // 设置倒计时,根据难度
@@ -340,6 +344,19 @@
             var input_box =document.getElementById('input_area');
             input_box.value = input_box.value.substr(0, input_box.value.length - 1);
         });
+
+        function show_specil_tips(t_level){
+            $("#messageInfo1").text(message_box[0]);
+            message_box.shift();
+            if (message_box.length === 0){
+                message_box = ['牢牢记住几条运算律是非常必要的！','A+B=B+A，有什么用？8+3+2=8+2+3，悟了吧！',
+                'A+（B+C）=（A+B）+C，（2+6）+8=（2+8）+6，凑整神器。','能够灵活运用各条运算律也是非常重要的。',
+                'A×B=B×A，交换一下，计算可能更轻松,，如4×6×2=4×2×6','（A×B）×C=A×（B×C），如（4×6）×5=4×（6×5），是不是更简单了？',
+                '（A+B）×C=A×C+B×C，如（4+25）×4=4×4+25×4','减法是加法的逆运算','除法是乘法的逆运算','分数式子是特殊的除法算式表示',
+                '凑十凑整，灵活变换；如23+46+57=23+57+46','特殊式株，牢记心中；如125×8=1000；25×4=100；12×5=60；九九乘法表',
+                '如凑整，加大则减，加小则加；减大则加，减小则减：','整数小数分数，运算技巧通用','进退位算清，运算要细心','遇到除不尽请结果保留2位小数.']
+            }
+        }
 
         function change_timout_flag(){
             timeout_flag = 1;

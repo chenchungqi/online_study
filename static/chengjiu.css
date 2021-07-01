@@ -1,0 +1,36 @@
+body {
+    background-image:url('/static/images/chengjiu_bg.png');
+    background-size: cover;
+}
+
+table {
+    width: 100%;
+    margin: 130px auto;
+    text-align: center;
+}
+tr {
+    height: 80px;
+    width: 100%;
+}
+.title {
+    font-size: 36px;
+}
+
+.btn_large {
+    font-size: 22px;
+    width: 40%;
+    height: 60px;
+    border-radius: 20px;
+}
+.personal_rank_display {
+    position: absolute;
+    right: 90px;
+    top: 200px;
+}
+.personal_rank_display_main {
+    font-size: 24px;
+    text-align: center;
+    padding-top: 10px;
+    font-family: "Apple Symbols";
+
+}

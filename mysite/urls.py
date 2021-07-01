@@ -29,6 +29,7 @@ urlpatterns = [
     path('likes/', include('likes.urls')),
     path('lottery/', include('lottery.urls')),
     path('math_practice/', include('math_practice.urls')),
+    path('chengjiu/', include('chengjiu.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

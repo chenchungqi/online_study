@@ -1,5 +1,18 @@
 .sgBtn{width: 135px; height: 35px; line-height: 35px; margin-left: 10px; margin-top: 10px; text-align: center; background-color: #0095D9; color: #FFFFFF; float: left; border-radius: 5px;}
-
+body {
+    background-image:url('/static/images/blue_bg.png');
+    background-size:cover;
+}
 .user_info {
-    line-height: 30px;
+    line-height: 70px;
+    font-size: 26px;
+    text-align: center;
+}
+.go_img {
+    background-image:url('/static/images/go.png');
+    background-size: 170px 100px;
+    width: 170px;
+    height: 100px;
+    margin: 0 auto;
+    margin-top: 100px;
 }

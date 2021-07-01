@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title%}
+    我的网站|策略集
+{% endblock %}
+{% block nav_method_active %}active{% endblock %}
+
+{% block hearder_extends %}
+    <link rel="stylesheet" href="{% static 'method.css' %}">
+{% endblock %}
+
+{% block content%}
+    <div class="container">
+        <div class="row">
+            {% if user.is_staff %}
+                    <div class="tubiao"></div>
+            {% endif %}
+        <ul class="ul_css">
+            <li>1、牢牢记住几条运算律是非常必要的！</li>
+            <li>2、加法交换律A+B=B+A，有什么用？8+3+2=8+2+3，悟了吧！</li>
+            <li>3、加法结合律A+（B+C）=（A+B）+C，（2+6）+8=（2+8）+6，凑整神器。</li>
+            <li>4、能够灵活运用各条运算律也是非常重要的。</li>
+            <li>5、乘法交换律A×B=B×A，交换一下，计算可能更轻松,，如4×6×2=4×2×6</li>
+            <li>6、乘法结合律（A×B）×C=A×（B×C），如（4×6）×5=4×（6×5），是不是更简单了？</li>
+            <li>7、乘法分配律（A+B）×C= A×C+B×C，如（4+25）×4=4×4+25×4</li>
+            <li>8、凑十凑整，灵活变换；如23+46+57=23+57+46</li>
+            <li>9、特殊式株，牢记心中；如125×8=1000；25×4=100；12×5=60；九九乘法表</li>
+            <li>10、如进行凑整，加大则减，加小则加；减大则加，减小则减：</li>
+            <li>48+69=（50-2）+（70-1）=50+70-2-1；</li>
+            <li>73+89=（70+3）+（80+9）=70+80+3+9；</li>
+            <li>421-202=420-200+1-2；</li>
+            <li>789-123=780-120+9-3</li>
+            <li>（运算熟练后可省去中间转换步骤的时间）</li>
+            <li>11、整数小数分数，运算技巧通用</li>
+            <li>12、进退位算清，运算要细心</li>
+            <li>计算结果遇到除不尽情况保留两位小数。</li>
+        </ul>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script_extends %}
+<script type="text/javascript">
+var start;
+var end;
+var total_time = 0;
+
+start = new Date();//用户进入时间
+
+$(window).bind('beforeunload', function (e) {
+    end = new Date(); //用户退出时间
+    total_time = end.getTime() - start.getTime();
+    total_time = Math.ceil(total_time / 1000); //取的是秒并且化整用户停留时间
+    {#var already_stay_time = context['stay_methodPage_time'];#}
+    {#console.log(already_stay_time);#}
+    {#already_stay_time += total_time;#}
+    $.ajax({
+        url: "{% url 'load_staytime' %}",
+        type: 'GET',
+        data: {
+            already_stay_time: total_time,
+        },
+        cache: false,
+        success: function (data){
+                if (data['status']=='SUCCESS'){
+                    console.log('存储时间成功');
+                }
+                },
+        error: function (xhr){
+            console.log(xhr)
+        }
+    });
+});
+</script>
+{% endblock %}

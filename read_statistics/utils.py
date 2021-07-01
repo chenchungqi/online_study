@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from django.db.models import Sum
 from .models import ReadNum, ReadDetail
+from user.models import Profile
 
 
 def read_statistics_once_read(request, obj):
@@ -46,3 +47,14 @@ def get_yesterday_hot_data(content_type):
     return read_details[:7]
 
 
+# 获取答对题数前20名的userid
+def get_correctnum_rank():
+    correct_rank = Profile.objects.filter().order_by('-cquestion_sum')
+    # print(correct_rank)
+    return correct_rank[:20]
+
+
+def get_correctnum_rank2():
+    correct_rank = Profile.objects.filter().order_by('-cquestion_sum')
+    # print(correct_rank)
+    return correct_rank[:10]

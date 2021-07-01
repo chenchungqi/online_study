@@ -29,11 +29,10 @@ div.title_one {
     width: 100%;
 }
 #question_place {
-    font-size: 48px;
+    font-size: 42px;
     display: block;
     width: 70%;
     float: left;
-    padding-left: 30px;
     padding-top: 30px;
 }
 #input_area {
@@ -100,9 +99,8 @@ div.title_one {
 }
 
 #messageInfo1 {
-    font-size: 200%;
-    line-height: 50px;
-    padding-left: 30px;
+    font-size: 150%;
+    line-height: 30px;
 }
 #messageInfo2 {
     font-size: 150%;
