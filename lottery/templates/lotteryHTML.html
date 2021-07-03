@@ -19,7 +19,7 @@
             <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
                 <div class="lottery_body" >
                     <div class="turntable-bg">
-                        <div class="pointer"><img id="pointer" src="{% static 'images/1zhizhen.png' %}" alt="pointer"/></div>
+                        <div class="pointer"><img id="pointer" src="{% static 'images/pointer.png' %}" alt="pointer"/></div>
                         <div class="rotate" ><img id="rotate" src="{% static 'images/xiaozhuanpan.png' %}" alt="turntable"/></div>
                     </div>
                 </div>
@@ -110,11 +110,10 @@ $(function (){
                 },
                 cache: false,
                 success: function (data){
-                    console.log('111111')
                     $("#lotteryCount").text(data['last_count']);
                     lottery_item =data['now_lottery']
                     lottery_item = lottery_item *1;
-                    console.log('lottery_item='+lottery_item);
+                    //console.log('lottery_item='+lottery_item);
                     switch (lottery_item) {
                         case 0:
                             //var angle = [26, 88, 137, 185, 235, 287, 337];

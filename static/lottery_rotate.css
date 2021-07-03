@@ -61,6 +61,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   height: 650px;
   margin: 0 auto;
   position: relative;
+  top: 60px;
 }
 .turntable-bg .mask {
   width: 454px;

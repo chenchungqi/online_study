@@ -379,8 +379,8 @@ def list_method(data):
 def get_question_method(study_model, question_counts, question_difficulty):
     question_list = []
     wrong_questions = study_model.split(',')
-    print(question_difficulty)
-    print(study_model)
+    #print(question_difficulty)
+    #print(study_model)
     study_model_matrix = [
         [1, 0, 0, 0, 0, 0, 0, 0, 0],
         [1, 1, 0, 0, 0, 0, 0, 0, 0],
@@ -404,13 +404,13 @@ def get_question_method(study_model, question_counts, question_difficulty):
         dict_num[eval("list_method(data)")] += 1
 
     for key, values in dict_num.items():
-        print(key, values)
+        #print(key, values)
         if values != 0:
             listb = get_differentType_question(key, values)
             for each in listb:
                 question_list.append(each)
     random.shuffle(question_list)
-    print(question_list)
+    #print(question_list)
     return question_list
 
 
@@ -457,13 +457,13 @@ def math_practice_main(request):
 
             # 根据错误数据修改模型 相应错误类型权重+1
             sode = user.profile.user_study_mode
-            print(sode)
+            # print(sode)
             al = sode.split(',')
             al = [int(x) for x in al]
             al[int(question_mark[1:]) - 1] += 1
             str1 = ','.join(str(i) for i in al)
             user.profile.user_study_mode = str1
-            print(str1)
+            # print(str1)
             user.profile.save()
 
         context['tempData_list'] = tempData
@@ -512,10 +512,10 @@ def update_lottery_count(request):
     learning_time = request.GET.get('total_learning_time')
     user = request.user
     questionDifficulty = user.profile.question_difficulty
-    print(questionDifficulty)
-    print(type(questionDifficulty))
-    print(learning_time)
-    print(type(learning_time))
+    # print(questionDifficulty)
+    # print(type(questionDifficulty))
+    # print(learning_time)
+    # print(type(learning_time))
     questionDifficulty_Alist = [200000, 200000, 200000, 320000, 400000, 440000, 640000, 720000, 800000]
     questionDifficulty_Clist = [400000, 400000, 400000, 500000, 600000, 640000, 920000, 1040000, 1140000]
     addCount = 0
@@ -531,7 +531,7 @@ def update_lottery_count(request):
         score = '评分为:A'
         # 升级
         if questionDifficulty < 8 and int(learning_time) < questionDifficulty_Alist[questionDifficulty]:
-            print('评分为:A,并且答题速度快，升级')
+            #print('评分为:A,并且答题速度快，升级')
             if questionDifficulty > 6:
                 addCount += 3
             elif questionDifficulty > 3:
@@ -545,7 +545,7 @@ def update_lottery_count(request):
     else:
         if int(correct_rates) < 60:
             if questionDifficulty > 0 and int(learning_time) > questionDifficulty_Clist[questionDifficulty]:
-                print('评分为:C,并且答题速度慢，降级')
+                #print('评分为:C,并且答题速度慢，降级')
                 user.profile.question_difficulty -= 1
                 user.profile.save()
         score = '评分为:C'
@@ -586,7 +586,7 @@ def update_lottery_count(request):
                 tips = '开端'
         else:
             pass
-        print(profile.achievement_title)
+        # print(profile.achievement_title)
     profile.save()
     data = {}
     data['status'] = 'SUCCESS'

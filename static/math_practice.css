@@ -11,7 +11,7 @@ div.rightBtn {
 div.title_one {
     margin: 0 auto;
     text-align: center;
-    font-size: 24px;
+    font-size: 30px;
     padding-top: 20px;
     padding-bottom: 20px;
 }
@@ -19,7 +19,7 @@ div.title_one {
 .left_part {
     display: block;
     width: 50%;
-    height: 400px;
+    height: 600px;
     float: left;
 }
 
@@ -56,7 +56,7 @@ div.title_one {
 .right_part {
     display: block;
     width: 50%;
-    height: 400px;
+    height: 600px;
     float: left;
 }
 .btn_extra {
@@ -128,3 +128,7 @@ body{font:14px/180% Arial, Helvetica, sans-serif, "新宋体";}
 /*.btn:hover {background: rgb(0, 75, 0);text-decoration:none}*/
 #demo{margin:20px auto;width:120px;height:120px}
 .demo p{text-align:center}
+
+.contain {
+    width: 1500px;
+}

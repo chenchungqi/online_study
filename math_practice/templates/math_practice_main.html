@@ -19,7 +19,7 @@
     <div class="row title_one">
             <span class="title">Mathematics - revision</span>
         </div>
-    <div class="container">
+    <div class="container contain">
         <div class="left_part">
             <div class="question_part">
                 <span id="question_place">题目显示区域 </span>
@@ -190,17 +190,21 @@
             $("#messageInfo").text(total_learning_time);
         });
         $("#a_btn").click(function(){
+            var input_answer = document.getElementsByClassName('input_answer')[0].value;
+            if (input_answer == ''){
+                alert('请勿空提交.')
+                return false;
+            }
             $("#fairy_position").removeClass();
             $("body").removeClass();
             $("#messageInfo1").text('');
             $("#messageInfo2").text('');
             clearTimeout(tom);
-            var input_answer = document.getElementsByClassName('input_answer')[0].value;
             document.getElementById('input_area').focus();
             var correct_answer_withmark = tempData_list[0].split('=')[1];
             var correct_answer = correct_answer_withmark.split('&')[0];
             var question_mark = correct_answer_withmark.split('&')[1];
-            console.log('correct_answer='+correct_answer,'input_answer='+input_answer)
+            // console.log('correct_answer='+correct_answer,'input_answer='+input_answer)
             //将数组的第一个元素删除，重新覆盖掉tempData_list
             tempData_list.shift();
             $.ajax({
@@ -247,6 +251,7 @@
                         $("#question_place").text('');
                         $("#messageInfo1").text('');
                         $("#messageInfo2").text('');
+                        $("#messageInfo").text('');
                         window.wxc.xcConfirm('你这组已经学完，休息一下吧。', window.wxc.xcConfirm.typeEnum.info);
                         $("#take_a_break").removeAttr('disabled');
                         $('#timeout').pietimer({
@@ -257,7 +262,7 @@
                         },function(){
                         });
                     }else{
-                        console.log('tempData_list='+tempData_list)
+                        // console.log('tempData_list='+tempData_list)
                         var questionAnswer = tempData_list[0].split('=');
                         var t_level = questionAnswer[1].split('&')[1];
                         show_specil_tips(t_level);

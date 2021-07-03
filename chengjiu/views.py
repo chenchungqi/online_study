@@ -14,6 +14,15 @@ from django.http import JsonResponse
 #     print(group_rank)
 #     return group_rank[:5]
 
+
+def fit_correctNumRank(rank_list,bottom,top,request):
+    user = request.user
+    for i in range(bottom, top):
+        if rank_list[i].user == user.profile.user:
+            return True
+    return False
+
+
 def chengjiu_main(request):
     context = {}
     user = request.user
@@ -55,9 +64,17 @@ def chengjiu_main(request):
     context['call_me_NO5'] = 0
     if get_correctnum_rank_list[0].user == user.profile.user:
         context['call_me_NO1'] = 1
-    for i in range(1, 5):
-        if get_correctnum_rank_list[i].user == user.profile.user:
-            context['call_me_NO2'] = 1
+    elif fit_correctNumRank(get_correctnum_rank_list,1, 5,request):
+        context['call_me_NO2'] = 1
+    elif fit_correctNumRank(get_correctnum_rank_list,5, 10,request):
+        context['call_me_NO3'] = 1
+    elif fit_correctNumRank(get_correctnum_rank_list,10, 20,request):
+        context['call_me_NO4'] = 1
+    else:
+        context['call_me_NO5'] = 1
+    # for i in range(1, 5):
+    #     if get_correctnum_rank_list[i].user == user.profile.user:
+
     # for i in range(5, 10):
     #     if get_correctnum_rank_list[i].user == user.profile.user:
     #         context['call_me_NO3'] = 1

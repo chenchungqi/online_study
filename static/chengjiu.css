@@ -1,11 +1,13 @@
 body {
     background-image:url('/static/images/chengjiu_bg.png');
     background-size: cover;
+    background-repeat: no-repeat;
 }
 
 table {
     width: 100%;
-    margin: 130px auto;
+    position: relative;
+    top: 120px;
     text-align: center;
 }
 tr {
@@ -24,8 +26,8 @@ tr {
 }
 .personal_rank_display {
     position: absolute;
-    right: 90px;
-    top: 200px;
+    right: 120px;
+    top: 260px;
 }
 .personal_rank_display_main {
     font-size: 24px;

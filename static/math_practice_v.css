@@ -9,21 +9,21 @@
 
 .green_fairy_go {
     background-image:url('/static/images/green_fairy_go.png');
-    background-size: 250px 350px;
-    height: 350px;
-    width: 250px;
+    background-size: 300px 430px;
+    height: 430px;
+    width: 300px;
     position: absolute;
-    left: 50px;
-    top: 400px;
+    left: 100px;
+    bottom: 0px;
 }
 .green_fairy {
     background-image:url('/static/images/green_fairy.png');
-    background-size: 250px 350px;
-    height: 350px;
-    width: 250px;
+    background-size: 300px 430px;
+    height: 430px;
+    width: 300px;
     position: absolute;
-    left: 50px;
-    top: 400px;
+    left: 100px;
+    bottom: 0px;
 }
 
 .green_bg {
@@ -33,12 +33,12 @@
 
 .red_fairy {
     background-image:url('/static/images/red_fairy.png');
-    background-size: 250px 350px;
-    height: 350px;
-    width: 250px;
+    background-size: 300px 430px;
+    height: 430px;
+    width: 300px;
     position: absolute;
-    left: 50px;
-    top: 400px;
+    left: 100px;
+    bottom: 0px;
 }
 .red_bg {
     background-image:url('/static/images/red_bg.png');
@@ -46,17 +46,17 @@
 }
 .timeout {
     position: absolute;
-    top: 400px;
-    left: 600px;
+    top: 550px;
+    left: 700px;
 }
 .yellow_fairy {
     background-image:url('/static/images/yellow_fairy.png');
-    background-size: 250px 350px;
-    height: 350px;
-    width: 250px;
+    background-size: 300px 430px;
+    height: 430px;
+    width: 300px;
     position: absolute;
-    left: 50px;
-    top: 400px;
+    left: 100px;
+    bottom: 0px;
 }
 .yellow_bg {
     background-image:url('/static/images/yellow_bg.png');
@@ -64,12 +64,12 @@
 }
 .purple_fairy {
     background-image:url('/static/images/purple_fairy.png');
-    background-size: 250px 350px;
-    height: 350px;
-    width: 250px;
+    background-size: 300px 430px;
+    height: 430px;
+    width: 300px;
     position: absolute;
-    left: 50px;
-    top: 400px;
+    left: 100px;
+    bottom: 0px;
 }
 .purple_bg {
     background-image:url('/static/images/purple.png');
@@ -77,10 +77,10 @@
 }
 #chengjiu_rukou {
     background-image:url('/static/images/chengjiu_btn.jpg');
-    background-size: 60px 220px;
-    height: 220px;
-    width: 60px;
+    background-size: 120px 300px;
+    height: 300px;
+    width: 120px;
     position: absolute;
-    right: 70px;
-    bottom: 120px;
+    right: 20px;
+    bottom: 60px;
 }
