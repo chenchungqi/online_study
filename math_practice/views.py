@@ -524,6 +524,12 @@ def update_lottery_count(request):
         score = '评分为:S'
         # 升级
         if questionDifficulty < 8:
+            if questionDifficulty > 5:
+                addCount += 3
+            elif questionDifficulty > 2:
+                addCount += 2
+            else:
+                addCount += 1
             user.profile.question_difficulty += 1
             user.profile.save()
     elif int(correct_rates) >= 90:
@@ -532,9 +538,9 @@ def update_lottery_count(request):
         # 升级
         if questionDifficulty < 8 and int(learning_time) < questionDifficulty_Alist[questionDifficulty]:
             #print('评分为:A,并且答题速度快，升级')
-            if questionDifficulty > 6:
+            if questionDifficulty > 5:
                 addCount += 3
-            elif questionDifficulty > 3:
+            elif questionDifficulty > 2:
                 addCount += 2
             else:
                 addCount += 1

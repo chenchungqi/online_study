@@ -17,7 +17,7 @@
 
 {% block content %}
     <div class="row title_one">
-            <span class="title">Mathematics - revision</span>
+            <span class="title">数学-计算训练</span>
         </div>
     <div class="container contain">
         <div class="left_part">
@@ -220,7 +220,7 @@
                 success: function (context){
                     if(context['status']=='RIGHT'){
                         if(context['staff']!='True'){
-                            $("#messageInfo").text('Correct!');
+                            $("#messageInfo").text('正确，非常棒!');
                         }
                         correct_nums +=1;
                         continuiltyCorrect +=1;
@@ -239,9 +239,9 @@
                         }
                     }else{
                         if(context['staff']!='True'){
-                            $("#messageInfo").text('Sorry,wrong answer.');
+                            $("#messageInfo").text('哎呀，回答错误.');
                         }
-                        $("#messageInfo2").text('Correct answer is:'+context['rightAnswer']);
+                        $("#messageInfo2").text('正确答案是:'+context['rightAnswer']);
                         $("#fairy_position").addClass("red_fairy");
                         $("body").addClass("red_bg");
                         false_nums +=1;
