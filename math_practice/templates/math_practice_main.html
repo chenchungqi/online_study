@@ -204,6 +204,8 @@
             var correct_answer_withmark = tempData_list[0].split('=')[1];
             var correct_answer = correct_answer_withmark.split('&')[0];
             var question_mark = correct_answer_withmark.split('&')[1];
+            var orgin_question = tempData_list[0].split('=')[0];
+            //console.log(orgin_question);
             // console.log('correct_answer='+correct_answer,'input_answer='+input_answer)
             //将数组的第一个元素删除，重新覆盖掉tempData_list
             tempData_list.shift();
@@ -214,6 +216,7 @@
                     input_answer: input_answer,
                     correct_answer:correct_answer,
                     question_mark:question_mark,
+                    orgin_question:orgin_question,
                     tempData:tempData_list,
                 },
                 cache: false,
@@ -241,7 +244,7 @@
                         if(context['staff']!='True'){
                             $("#messageInfo").text('哎呀，回答错误.');
                         }
-                        $("#messageInfo2").text('正确答案是:'+context['rightAnswer']);
+                        $("#messageInfo2").text(context['orgin_question']+'正确答案是:'+context['rightAnswer']);
                         $("#fairy_position").addClass("red_fairy");
                         $("body").addClass("red_bg");
                         false_nums +=1;

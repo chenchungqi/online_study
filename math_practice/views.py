@@ -218,9 +218,9 @@ def question_t7(count):
                 r = str(first) + operator1 + str(second) + operator2 + str(third) + ' ='
                 answer = eval(str(first) + operator1 + str(second) + operator2 + str(third))
             else:
-                first = round(random.uniform(1, 100), 2)
-                second = round(random.uniform(1, 100), 1)
-                third = round(random.uniform(1, 100), 1)
+                first = round(random.uniform(1, 10), 2)
+                second = round(random.uniform(1, 50), 1)
+                third = round(random.uniform(50, 100), 1)
                 r = str(first) + operator1 + str(second) + operator2 + str(third) + ' ='
                 answer = eval(str(first) + operator1 + str(second) + operator2 + str(third))
         r += str(round(answer, 2))
@@ -436,6 +436,7 @@ def math_practice_main(request):
         input_answer = request.POST.get('input_answer', '')
         correct_answer = request.POST.get('correct_answer', '')
         question_mark = request.POST.get('question_mark', '')
+        orgin_question = request.POST.get('orgin_question', '')
         tempData = request.POST.get('tempData', '')
         user = request.user
         if user.is_staff:
@@ -452,6 +453,7 @@ def math_practice_main(request):
         else:
             context['status'] = 'ERROR'
             context['rightAnswer'] = correct_answer
+            context['orgin_question'] = orgin_question
             user.profile.wquestion_sum += 1
             user.profile.save()
 
@@ -525,8 +527,6 @@ def update_lottery_count(request):
         # 升级
         if questionDifficulty < 8:
             if questionDifficulty > 5:
-                addCount += 3
-            elif questionDifficulty > 2:
                 addCount += 2
             else:
                 addCount += 1
@@ -539,8 +539,6 @@ def update_lottery_count(request):
         if questionDifficulty < 8 and int(learning_time) < questionDifficulty_Alist[questionDifficulty]:
             #print('评分为:A,并且答题速度快，升级')
             if questionDifficulty > 5:
-                addCount += 3
-            elif questionDifficulty > 2:
                 addCount += 2
             else:
                 addCount += 1
