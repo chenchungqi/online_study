@@ -196,37 +196,38 @@ def question_t6(count):
 # 小数除法（除不尽保留两位小数）：6.25/2、54.1/2/3.4
 def question_t7(count):
     llist = []
-    operator1 = random.choice('*/')
-    operator2 = random.choice('*/')
     for num in range(int(count)):
+        operator1 = random.choice('*/')
+        operator2 = random.choice('*/')
         if random.random() < 0.8:
             if operator1 == '*':
-                first = round(random.uniform(1, 100), 2)
-                second = round(random.uniform(1, 100), 1)
+                first = round(random.uniform(1, 50), 2)
+                second = random.randint(0, 30)
                 r = str(first) + operator1 + str(second) + ' ='
                 answer = eval(str(first) + operator1 + str(second))
             else:
                 first = round(random.uniform(1, 100), 2)
-                second = round(random.uniform(1, 100), 1)
+                second = random.randint(1, 50)
                 r = str(first) + operator1 + str(second) + ' ='
                 answer = eval(str(first) + operator1 + str(second))
         else:
             if operator1 == '/' and operator2 == '/':
-                first = round(random.uniform(50, 100), 2)
-                second = round(random.uniform(1, 50), 1)
-                third = round(random.uniform(1, 10), 1)
+                first = round(random.uniform(1, 100), 2)
+                second = random.randint(1, 50)
+                third = random.randint(1, 10)
                 r = str(first) + operator1 + str(second) + operator2 + str(third) + ' ='
                 answer = eval(str(first) + operator1 + str(second) + operator2 + str(third))
             else:
                 first = round(random.uniform(1, 10), 2)
-                second = round(random.uniform(1, 50), 1)
-                third = round(random.uniform(50, 100), 1)
+                second = random.randint(0, 50)
+                third = random.randint(0, 50)
                 r = str(first) + operator1 + str(second) + operator2 + str(third) + ' ='
                 answer = eval(str(first) + operator1 + str(second) + operator2 + str(third))
         r += str(round(answer, 2))
         r += '&T7'
         llist.append(r)
     return llist
+
 
 
 # 8.分数加减法（和<100，差>0）
